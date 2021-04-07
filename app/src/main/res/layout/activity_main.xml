@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D6EEEB"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tvHeadline"
+        android:layout_width="440dp"
+        android:layout_height="65dp"
+        android:background="#51B8B8"
+        android:gravity="center"
+        android:text="@string/headline"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btMultiplayer"
+        android:layout_width="327dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="308dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/online"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeadline" />
+
+    <Button
+        android:id="@+id/btOfflineplayer"
+        android:layout_width="327dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/offline"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btMultiplayer" />
+
+    <Button
+        android:id="@+id/btStatistics"
+        android:layout_width="327dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/statistics"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btOfflineplayer" />
+
+    <ImageButton
+        android:id="@+id/ibToolbarHome"
+        android:layout_width="147dp"
+        android:layout_height="65dp"
+        android:background="#51B8B8"
+        android:backgroundTint="#51B8B8"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_home_24" />
+
+    <ImageButton
+        android:id="@+id/ibToolbarUser"
+        android:layout_width="148dp"
+        android:layout_height="65dp"
+        android:background="#51B8B8"
+        android:backgroundTint="#51B8B8"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ibToolbarSettings"
+        app:layout_constraintStart_toEndOf="@+id/ibToolbarHome"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
+
+    <ImageButton
+        android:id="@+id/ibToolbarSettings"
+        android:layout_width="147dp"
+        android:layout_height="65dp"
+        android:background="#51B8B8"
+        android:backgroundTint="#51B8B8"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_settings_24" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="193dp"
+        android:layout_height="188dp"
+        android:layout_marginTop="120dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/brain_emoji" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
