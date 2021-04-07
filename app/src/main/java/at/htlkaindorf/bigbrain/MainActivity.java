@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
-
     private final Activity parent = this;
 
     // Toolbar

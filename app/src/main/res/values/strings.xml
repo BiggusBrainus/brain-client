@@ -1,17 +1,13 @@
 <resources>
     <string name="app_name">BigBrain</string>
-    <!--Home Screen-->
-        <string name="headline">BigBrain</string>
-        <!--Buttons-->
-        <string name="offline">Offline</string>
-        <string name="online">Multiplayer</string>
-        <string name="statistics">Statistics</string>
-
-    <!--Login-->
-        <string name="email">Email:</string>
-        <string name="password">Password:</string>
-        <!--Buttons-->
-        <string name="login">Login</string>
-        <string name="signup">Sign up</string>
-
+    <string name="headline">BigBrain</string>
+    <string name="offline">Offline</string>
+    <string name="online">Multiplayer</string>
+    <string name="statistics">Statistics</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
+    <string name="name">Name:</string>
+    <string name="age">Age:</string>
 </resources>
