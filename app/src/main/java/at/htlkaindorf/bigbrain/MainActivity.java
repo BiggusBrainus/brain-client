@@ -1,5 +1,6 @@
 package at.htlkaindorf.bigbrain;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -14,10 +15,10 @@ import android.widget.ImageButton;
 public class MainActivity extends AppCompatActivity {
     private final Activity parent = this;
 
-    // Toolbar
-    private ImageButton toolbarHome;
-    private ImageButton toolbarUser;
-    private ImageButton toolbarSettings;
+    // Navigationbar
+    private ImageButton navigationbarHome;
+    private ImageButton navigationbarUser;
+    private ImageButton navigatiobbarSettings;
 
     // Menu Options
     private Button multiplayer;
@@ -29,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Toolbar
-        toolbarHome = findViewById(R.id.ibToolbarHome);
-        toolbarUser = findViewById(R.id.ibToolbarUser);
-        toolbarSettings = findViewById(R.id.ibToolbarSettings);
+        // Navigationbar
+        navigationbarHome = findViewById(R.id.ibNavigationbarHome);
+        navigationbarUser = findViewById(R.id.ibNavigationbarUser);
+        navigatiobbarSettings = findViewById(R.id.ibNavigationbarSettings);
 
         // Menu Options
         multiplayer = findViewById(R.id.btMultiplayer);
@@ -41,28 +42,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         // If User in not loged in
-        Intent intet = new Intent(parent, LoginActivity.class);
-        startActivity(intet);
+        //Intent intet = new Intent(parent, LoginActivity.class);
+        //startActivity(intet);
 
-        toolbarHome.setColorFilter(Color.rgb(93, 93, 93));
+        navigationbarHome.setColorFilter(Color.rgb(93, 93, 93));
 
 
-        toolbarUser.setOnClickListener(new View.OnClickListener() {
+        navigationbarUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Auf User Screen wechseln
-                Log.i("Test", "User");
-                // TODO
-
+                Intent intent = new Intent(parent, UserActivity.class);
+                startActivityForResult(intent, 2);
             }
         });
 
-        toolbarSettings.setOnClickListener(new View.OnClickListener() {
+        navigatiobbarSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Auf Settings Screen wechseln
-                Log.i("Test", "Settings");
-                // TODO
+                Intent intent = new Intent(parent, SettingsActivity.class);
+                startActivityForResult(intent, 3);
             }
         });
 
@@ -92,5 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 // TODO
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 2){
+
+        }
     }
 }

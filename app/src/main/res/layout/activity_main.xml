@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btOfflineplayer" />
 
     <ImageButton
-        android:id="@+id/ibToolbarHome"
+        android:id="@+id/ibNavigationbarHome"
         android:layout_width="147dp"
         android:layout_height="65dp"
         android:background="#51B8B8"
@@ -77,19 +77,19 @@
         app:srcCompat="@drawable/ic_baseline_home_24" />
 
     <ImageButton
-        android:id="@+id/ibToolbarUser"
+        android:id="@+id/ibNavigationbarUser"
         android:layout_width="148dp"
         android:layout_height="65dp"
         android:background="#51B8B8"
         android:backgroundTint="#51B8B8"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ibToolbarSettings"
-        app:layout_constraintStart_toEndOf="@+id/ibToolbarHome"
+        app:layout_constraintEnd_toStartOf="@+id/ibNavigationbarSettings"
+        app:layout_constraintStart_toEndOf="@+id/ibNavigationbarHome"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <ImageButton
-        android:id="@+id/ibToolbarSettings"
+        android:id="@+id/ibNavigationbarSettings"
         android:layout_width="147dp"
         android:layout_height="65dp"
         android:background="#51B8B8"

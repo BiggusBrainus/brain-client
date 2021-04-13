@@ -1,8 +1,6 @@
 package at.htlkaindorf.bigbrain;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         signup = findViewById(R.id.btSignup);
 
         // Text
-        email = findViewById(R.id.etEmail);
+        email = findViewById(R.id.etEmailUser);
         password = findViewById(R.id.etPassword);
 
         login.setOnClickListener(new View.OnClickListener() {
