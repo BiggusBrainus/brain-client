@@ -70,7 +70,9 @@ public class UserActivity extends AppCompatActivity {
         navigatiobbarSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                intent.putExtra("activity", "settings");
+                setResult(2, intent);
+                finish();
             }
         });
     }

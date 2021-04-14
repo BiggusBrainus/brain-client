@@ -2,6 +2,7 @@ package at.htlkaindorf.bigbrain;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         // Navigationbar
         navigationbarHome = findViewById(R.id.ibNavigationbarHome);
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(parent, SettingsActivity.class);
-                startActivityForResult(intent, 3);
+                startActivityForResult(intent, 2);
             }
         });
 
@@ -95,7 +97,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 2){
-
+            String newActivity = data.getStringExtra("activity");
+            if(newActivity.equals("user")){
+                Intent intent = new Intent(parent, UserActivity.class);
+                startActivityForResult(intent, 2);
+            }else if(newActivity.equals("settings")){
+                Intent intent = new Intent(parent, SettingsActivity.class);
+                startActivityForResult(intent, 2);
+            }
         }
     }
 }
