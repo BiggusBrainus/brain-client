@@ -14,4 +14,6 @@
     <color name="turquoise">#51B8B8</color>
     <color name="light_green">#D6EEEB</color>
     <color name="grey">#393939</color>
+    <color name="correct">#ABE291</color>
+    <color name="wrong">#E98F8F</color>
 </resources>

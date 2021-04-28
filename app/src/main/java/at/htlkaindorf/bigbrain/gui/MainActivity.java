@@ -1,8 +1,7 @@
-package at.htlkaindorf.bigbrain;
+package at.htlkaindorf.bigbrain.gui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import at.htlkaindorf.bigbrain.R;
 
 public class MainActivity extends AppCompatActivity {
     private final Activity parent = this;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         // Navigationbar
         navigationbarHome = findViewById(R.id.ibNavigationbarHome);
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Auf Online Screen wechseln
-                Log.i("Test", "Online");
-                // TODO
+                Intent intent = new Intent(parent, GameActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,62 +1,58 @@
-package at.htlkaindorf.bigbrain;
+package at.htlkaindorf.bigbrain.gui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class UserActivity extends AppCompatActivity {
-    private Activity parentUser = this;
+import at.htlkaindorf.bigbrain.R;
 
+public class SettingsActivity extends AppCompatActivity {
     // Navigationbar
     private ImageButton navigationbarHome;
     private ImageButton navigationbarUser;
     private ImageButton navigatiobbarSettings;
 
-    // Text
-    private EditText userName;
-    private EditText userEmail;
-    private EditText userAge;
+    // Seekbar
+    private SeekBar seekbarMasterVolume;
+    private SeekBar seekbarRightVolume;
+    private SeekBar seekbarWrongVolume;
 
-    // Button
-    private Button save;
+    // Text
+    private TextView textMasterVolume;
+    private TextView textRightVolume;
+    private TextView textWrongVolume;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_settings);
 
         // Navigationbar
         navigationbarHome = findViewById(R.id.ibNavigationbarHome);
         navigationbarUser = findViewById(R.id.ibNavigationbarUser);
         navigatiobbarSettings = findViewById(R.id.ibNavigationbarSettings);
 
+        // Seekbar
+        seekbarMasterVolume = findViewById(R.id.sbMasterVloume);
+        seekbarRightVolume = findViewById(R.id.sbRightAnswerVolume);
+        seekbarWrongVolume = findViewById(R.id.sbWrongAnswerVolume);
+
         // Text
-        userName = findViewById(R.id.etNameUser);
-        userEmail = findViewById(R.id.etEmailUser);
-        userAge = findViewById(R.id.etAgeUser);
+        textMasterVolume = findViewById(R.id.tvMasterVolume);
+        textRightVolume = findViewById(R.id.tvRightAnswerVolume);
+        textWrongVolume = findViewById(R.id.tvWrongAnswerVolume);
 
-        // Button
-        save = findViewById(R.id.btSave);
-
-        navigationbarUser.setColorFilter(Color.rgb(93,93,93));
+        navigatiobbarSettings.setColorFilter(Color.rgb(93,93,93));
 
         // Intent
         Intent intent = new Intent();
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO
-            }
-        });
 
         navigationbarHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +63,10 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        navigatiobbarSettings.setOnClickListener(new View.OnClickListener() {
+        navigationbarUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("activity", "settings");
+                intent.putExtra("activity", "user");
                 setResult(2, intent);
                 finish();
             }

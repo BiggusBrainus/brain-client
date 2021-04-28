@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     android:background="@color/light_green"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".gui.LoginActivity">
 
     <TextView
         android:id="@+id/tvHeadline"
         android:layout_width="420dp"
         android:layout_height="65dp"
         android:background="@color/turquoise"
+        android:editable="false"
         android:gravity="center"
         android:text="@string/headline"
         android:textAlignment="center"
@@ -83,6 +84,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="436dp"
         android:layout_marginBottom="35dp"
+        android:editable="false"
         android:text="@string/password"
         android:textColor="@color/grey"
         android:textSize="30sp"
@@ -114,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="368dp"
         android:layout_marginBottom="28dp"
+        android:editable="false"
         android:text="@string/email"
         android:textColor="@color/grey"
         android:textSize="30sp"

@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     android:background="@color/light_green"
     android:orientation="vertical"
-    tools:context=".UserActivity">
+    tools:context=".gui.UserActivity">
 
     <TextView
         android:id="@+id/tvHeadline"
         android:layout_width="440dp"
         android:layout_height="65dp"
         android:background="@color/turquoise"
+        android:editable="false"
         android:gravity="center"
         android:text="@string/headline_settings"
         android:textAlignment="center"
@@ -83,6 +84,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:editable="false"
         android:text="@string/master_volume"
         android:textColor="@color/grey"
         android:textSize="25sp"
@@ -166,6 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:editable="false"
         android:text="@string/right_answer_volume"
         android:textColor="@color/grey"
         android:textSize="25sp"
@@ -180,6 +183,7 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:editable="false"
         android:text="@string/wrong_answer_volume"
         android:textColor="@color/grey"
         android:textSize="25sp"

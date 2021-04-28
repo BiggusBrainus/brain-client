@@ -1,4 +1,4 @@
-package at.htlkaindorf.bigbrain;
+package at.htlkaindorf.bigbrain.gui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import at.htlkaindorf.bigbrain.R;
 
 public class LoginActivity extends AppCompatActivity {
     // Button
