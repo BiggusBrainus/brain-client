@@ -9,7 +9,7 @@
     <string name="login">Login</string>
 
     <string name="headline_user">User</string>
-    <string name="signup">Sign up</string>
+    <string name="register_link">Not registered yet? Click here</string>
     <string name="name">Name:</string>
     <string name="age">Age:</string>
     <string name="save">Save</string>
@@ -19,4 +19,15 @@
     <string name="right_answer_volume">Right Answer Volume:</string>
     <string name="wrong_answer_volume">Wrong Answer Volume:</string>
     <string name="language">Language:</string>
+
+    <string name="username">Name:</string>
+    <string name="register">Register</string>
+    <string name="go_back">Go Back</string>
+
+    <string name="lobby">Lobby</string>
+    <string name="join">Join</string>
+    <string name="create">Create</string>
+
+    <string name="waiting">Waiting Room</string>
+    <string name="start">Start</string>
 </resources>

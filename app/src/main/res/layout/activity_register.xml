@@ -15,7 +15,7 @@
         android:background="@color/turquoise"
         android:editable="false"
         android:gravity="center"
-        android:text="@string/headline"
+        android:text="@string/register"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -24,19 +24,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btLogin"
+        android:id="@+id/btRegister"
         android:layout_width="327dp"
         android:layout_height="59dp"
         android:layout_marginTop="284dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
-        android:text="@string/login"
+        android:text="@string/register"
         android:textColor="@color/grey"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeadline" />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeadline"
+        app:layout_constraintVertical_bias="0.662" />
+
+    <Button
+        android:id="@+id/btGoBack"
+        android:layout_width="327dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="79dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:text="@string/go_back"
+        android:textColor="@color/grey"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btRegister" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -64,22 +79,19 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="436dp"
-        android:layout_marginBottom="35dp"
         android:editable="false"
         android:text="@string/password"
         android:textColor="@color/grey"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btLogin"
-        app:layout_constraintEnd_toEndOf="@+id/etPassword"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.68" />
 
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/etRegisterPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -90,24 +102,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="368dp"
-        android:layout_marginBottom="28dp"
-        android:editable="false"
-        android:text="@string/email"
-        android:textColor="@color/grey"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
-        android:id="@+id/etEmailUser"
+        android:id="@+id/etRegisterEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -119,17 +115,44 @@
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/tvRegisterNow"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/register_link"
+        android:editable="false"
+        android:text="@string/email"
         android:textColor="@color/grey"
-        android:textSize="22sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintHorizontal_bias="0.048"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.856" />
+        app:layout_constraintVertical_bias="0.603" />
+
+    <EditText
+        android:id="@+id/etRegisterUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textview8" />
+
+    <TextView
+        android:id="@+id/textview8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:textColor="@color/grey"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etRegisterUsername"
+        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

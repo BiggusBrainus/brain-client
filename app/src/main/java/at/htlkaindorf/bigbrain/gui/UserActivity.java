@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import at.htlkaindorf.bigbrain.R;
+import at.htlkaindorf.bigbrain.beans.User;
 
 public class UserActivity extends AppCompatActivity {
     private Activity parentUser = this;
@@ -49,6 +50,12 @@ public class UserActivity extends AppCompatActivity {
         save = findViewById(R.id.btSave);
 
         navigationbarUser.setColorFilter(Color.rgb(93,93,93));
+
+        // Set values
+        Intent i = getIntent();
+        User user = i.getParcelableExtra("user");
+        userName.setText(user.getUsername());
+        userEmail.setText(user.getEmail());
 
         // Intent
         Intent intent = new Intent();
