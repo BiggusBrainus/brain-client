@@ -32,7 +32,7 @@
         android:editable="false"
         android:gravity="center"
         android:padding="20dp"
-        android:text="Wie hoch ist der höchste, am höchsten gelegene Baum, der nicht ganz oben ist und nicht ganz unten ist?"
+        android:text="1 + 1 = 2"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

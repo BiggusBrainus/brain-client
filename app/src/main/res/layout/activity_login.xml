@@ -97,7 +97,7 @@
         android:layout_marginTop="368dp"
         android:layout_marginBottom="28dp"
         android:editable="false"
-        android:text="@string/email"
+        android:text="@string/username"
         android:textColor="@color/grey"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -107,7 +107,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etEmailUser"
+        android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"

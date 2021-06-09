@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -43,12 +42,12 @@
         android:backgroundTint="@color/turquoise"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ibNavigationbarSettings"
+        app:layout_constraintEnd_toStartOf="@+id/ibNavigationbarRanking"
         app:layout_constraintStart_toEndOf="@+id/ibNavigationbarHome"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <ImageButton
-        android:id="@+id/ibNavigationbarSettings"
+        android:id="@+id/ibNavigationbarRanking"
         android:layout_width="147dp"
         android:layout_height="65dp"
         android:background="@color/turquoise"
@@ -134,15 +133,14 @@
         android:id="@+id/tvMasterVolume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
-        android:text="20%"
+        android:text="50%"
         android:textColor="@color/grey"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/sbMasterVloume"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.0" />
@@ -151,14 +149,13 @@
         android:id="@+id/tvWrongAnswerVolume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:text="20%"
+        android:text="50%"
         android:textColor="@color/grey"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/sbWrongAnswerVolume"
         app:layout_constraintTop_toBottomOf="@+id/textView13"
         app:layout_constraintVertical_bias="0.0" />
@@ -214,14 +211,16 @@
         android:id="@+id/tvRightAnswerVolume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="20%"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="30dp"
+        android:text="50%"
         android:textColor="@color/grey"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView13"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.928"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.704" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sbRightAnswerVolume"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

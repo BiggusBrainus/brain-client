@@ -70,19 +70,17 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://172.20.10.6:8080/api/user/login";
+                String url = "http://192.168.43.152:8090/auth/register";
                 final JSONObject body = new JSONObject();
                 try {
-                    body.put("username", "asdf");
-                    body.put("password","asdf");
+                    body.put("username", name.getText());
+                    body.put("email", email.getText());
+                    body.put("password",password.getText());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", name.getText().toString());
-                params.put("password", password.getText().toString());
                 ApiAccess access = new ApiAccess();
-                access.getData(url, getApplicationContext(), body, params, RegisterActivity.this);
+                access.getData(url, getApplicationContext(), body, RegisterActivity.this, Request.Method.POST);
                 finish();
             }
         });
@@ -101,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
         try {
             jObject = new JSONObject(response);
             Log.i("Success: ", jObject.get("success").toString());
-            Log.i("UUID: ", jObject.get("uuid").toString());
+            Log.i("Token: ", jObject.get("token").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@
     <string name="offline">Offline</string>
     <string name="online">Multiplayer</string>
     <string name="statistics">Statistics</string>
+    <string name="username">Username:</string>
     <string name="email">Email:</string>
     <string name="password">Password:</string>
     <string name="login">Login</string>
@@ -20,7 +21,6 @@
     <string name="wrong_answer_volume">Wrong Answer Volume:</string>
     <string name="language">Language:</string>
 
-    <string name="username">Name:</string>
     <string name="register">Register</string>
     <string name="go_back">Go Back</string>
 

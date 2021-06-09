@@ -37,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
         // Navigationbar
         navigationbarHome = findViewById(R.id.ibNavigationbarHome);
         navigationbarUser = findViewById(R.id.ibNavigationbarUser);
-        navigatiobbarSettings = findViewById(R.id.ibNavigationbarSettings);
+        navigatiobbarSettings = findViewById(R.id.ibNavigationbarRanking);
 
         // Seekbar
         seekbarMasterVolume = findViewById(R.id.sbMasterVloume);

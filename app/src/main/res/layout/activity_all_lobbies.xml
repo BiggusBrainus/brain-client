@@ -71,6 +71,7 @@
         android:layout_height="367dp"
         android:layout_marginTop="160dp"
         android:background="@color/white"
+        android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"

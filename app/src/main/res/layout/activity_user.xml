@@ -42,12 +42,12 @@
         android:backgroundTint="@color/turquoise"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ibNavigationbarSettings"
+        app:layout_constraintEnd_toStartOf="@+id/ibNavigationbarRanking"
         app:layout_constraintStart_toEndOf="@+id/ibNavigationbarHome"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <ImageButton
-        android:id="@+id/ibNavigationbarSettings"
+        android:id="@+id/ibNavigationbarRanking"
         android:layout_width="147dp"
         android:layout_height="65dp"
         android:background="@color/turquoise"
@@ -80,7 +80,7 @@
         app:srcCompat="@drawable/brain_emoji" />
 
     <EditText
-        android:id="@+id/etEmailUser"
+        android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -167,7 +167,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.648"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/etEmailUser"
+        app:layout_constraintTop_toBottomOf="@+id/etUsername"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button

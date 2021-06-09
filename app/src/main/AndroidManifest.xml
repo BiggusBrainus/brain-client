@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BigBrain"
         android:usesCleartextTraffic="true">
+        <activity android:name=".gui.RankingActivity"></activity>
         <activity android:name=".gui.WaitingRoomActivity"></activity>
         <activity android:name=".gui.AllLobbiesActivity"></activity>
         <activity android:name=".gui.RegisterActivity"></activity>

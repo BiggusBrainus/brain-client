@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,12 +15,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+import at.htlkaindorf.bigbrain.adapter.WaitingRoomAdapter;
+import at.htlkaindorf.bigbrain.beans.Lobby;
+import at.htlkaindorf.bigbrain.beans.Question;
+import at.htlkaindorf.bigbrain.beans.User;
+import at.htlkaindorf.bigbrain.beans.WebSocket;
 import at.htlkaindorf.bigbrain.bl.ButtonSize;
 import at.htlkaindorf.bigbrain.bl.Game;
 import at.htlkaindorf.bigbrain.R;
@@ -48,6 +63,10 @@ public class GameActivity extends AppCompatActivity {
     // int
     private int counter = 0;
 
+    // Question
+    String rightAnswer = "";
+    List<String> wrong;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +83,13 @@ public class GameActivity extends AppCompatActivity {
         bottomLeft = findViewById(R.id.btBottomLeft);
         bottomRight = findViewById(R.id.btBottomRight);
 
-        // Set text to test that right answers become green and wrong answers become red
-        String rightAnswer = "Right";
-        List<String> wrong = Arrays.asList("Wrong", "Wrong", "Wrong");
+
+
+        WebSocket.bindGame(this);
+
+        // Just to test if no internet connection
+        //rightAnswer = "Right";
+        //wrong = Arrays.asList("Wrong", "Wrong", "Wrong");
 
         List<Button> buttonList = new ArrayList<>();
         buttonList.add(topLeft);
@@ -90,28 +113,47 @@ public class GameActivity extends AppCompatActivity {
         topLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(topLeft, rightAnswer, questionList,  wrong, buttonList);
+                //checkAnswer(topLeft, rightAnswer, questionList,  wrong, buttonList);
             }
         });
 
         topRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(topRight, rightAnswer, questionList,  wrong, buttonList);
+                //checkAnswer(topRight, rightAnswer, questionList,  wrong, buttonList);
             }
         });
 
         bottomLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(bottomLeft, rightAnswer, questionList,  wrong, buttonList);
+                //checkAnswer(bottomLeft, rightAnswer, questionList,  wrong, buttonList);
             }
         });
 
         bottomRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(bottomRight, rightAnswer, questionList,  wrong, buttonList);
+                //checkAnswer(bottomRight, rightAnswer, questionList,  wrong, buttonList);
+            }
+        });
+    }
+
+    public void nextQuestion(JSONObject jObject){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Question questionFromJ;
+                Gson gson = new Gson();
+                Type listType = new TypeToken<Question>() {}.getType();
+                try {
+                    questionFromJ = gson.fromJson(jObject.get("question").toString(), listType);
+                    rightAnswer = questionFromJ.getCorrect();
+                    wrong = questionFromJ.getWrong();
+                    question.setText(questionFromJ.getQuestion());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -201,15 +243,24 @@ public class GameActivity extends AppCompatActivity {
                 counter += 1;
                 Intent intent = getIntent();
                 int rounds = intent.getIntExtra("rounds", 0);
-                round.setText(counter + " / " + rounds);
                 if(counter <= rounds){
-                    //wrong.remove(wrong.size()-1);
+                    round.setText(counter + " / " + rounds);
+                }
+
+                if(counter <= rounds){
+
+                    // Nur zum Testen
+                    List<String> wrong2 = Arrays.asList("Wrong", "Wrong");
+                    if(counter == 3){
+                        wrong2 = Arrays.asList("Wrong");
+                    }
+                    //
                     setDefaultValues();
                     questionList.clear();
-                    questionList.addAll(wrong);
+                    questionList.addAll(wrong2);
                     questionList.add(rightAnswer);
                     setAnswersOnButtons(buttonList, questionList);
-                    checkNumberOfAnsweres(wrong);
+                    checkNumberOfAnsweres(wrong2);
                 }else{
                     finish();
                 }

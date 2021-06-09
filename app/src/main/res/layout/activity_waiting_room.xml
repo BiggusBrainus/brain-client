@@ -66,6 +66,7 @@
         android:layout_width="327dp"
         android:layout_height="260dp"
         android:background="@color/white"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.583"

@@ -39,11 +39,11 @@ public class UserActivity extends AppCompatActivity {
         // Navigationbar
         navigationbarHome = findViewById(R.id.ibNavigationbarHome);
         navigationbarUser = findViewById(R.id.ibNavigationbarUser);
-        navigatiobbarSettings = findViewById(R.id.ibNavigationbarSettings);
+        navigatiobbarSettings = findViewById(R.id.ibNavigationbarRanking);
 
         // Text
         userName = findViewById(R.id.etNameUser);
-        userEmail = findViewById(R.id.etEmailUser);
+        userEmail = findViewById(R.id.etUsername);
         userAge = findViewById(R.id.etAgeUser);
 
         // Button

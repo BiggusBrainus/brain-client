@@ -21,9 +21,9 @@ import java.util.Map;
 public class ApiAccess {
     private JsonResponseListener jrl;
 
-    public JSONObject getData(String url, Context context, JSONObject body, Map<String, String> parameters, JsonResponseListener jrl){
+    public JSONObject getData(String url, Context context, JSONObject body, JsonResponseListener jrl, int method){
        this. jrl = jrl;
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(method, url, new Response.Listener<String>() {
             //JSONObject jObject;
 
             @Override
@@ -44,10 +44,10 @@ public class ApiAccess {
         }) {
 
             //Pass Your Parameters
-            @Override
+            /*@Override
             protected Map<String, String> getParams() {
                 return parameters;
-            }
+            }*/
 
             // using Json and not String
             @Override
@@ -59,6 +59,41 @@ public class ApiAccess {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 return body.toString().getBytes();
+            }
+
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+
+        return null;
+    }
+
+    public JSONObject getData(String url, Context context, JsonResponseListener jrl, int method){
+        this. jrl = jrl;
+        StringRequest request = new StringRequest(method, url, new Response.Listener<String>() {
+            //JSONObject jObject;
+
+            @Override
+            public void onResponse(String response) {
+                if (!response.equals(null)) {
+                    jrl.onSuccessJson(response);
+                }
+                else {
+                    Log.i("Your Array Response", "Data Null");
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("error is ", "" + error);
+            }
+        }) {
+
+            // using Json and not String
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
             }
 
         };

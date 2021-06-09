@@ -4,20 +4,40 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable {
+    private int uid;
     private String username;
     private String email;
+    private String token;
 
     public User() {
     }
 
-    public User(String username, String email) {
+    public User(String username, String email, String token) {
         this.username = username;
         this.email = email;
+        this.token = token;
     }
 
     protected User(Parcel in) {
         username = in.readString();
+        token = in.readString();
         email = in.readString();
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getUsername() {
@@ -44,6 +64,7 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(username);
+        parcel.writeString(token);
         parcel.writeString(email);
     }
 
