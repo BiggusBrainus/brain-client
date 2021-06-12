@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_green"
     android:orientation="vertical"
-    tools:context=".gui.WaitingRoomActivity">
+    tools:context=".gui.CreateLobbyActivity">
 
     <TextView
         android:id="@+id/tvHeadline"
@@ -24,36 +24,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btStart"
-        android:layout_width="145dp"
+        android:id="@+id/btCreateLobby"
+        android:layout_width="327dp"
         android:layout_height="59dp"
+        android:layout_marginTop="568dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
-        android:text="@string/start"
+        android:text="@string/create"
         android:textColor="@color/grey"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tvHeadline"
-        app:layout_constraintHorizontal_bias="0.852"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.928" />
+        app:layout_constraintTop_toTopOf="@+id/tvHeadline" />
 
     <Button
-        android:id="@+id/btExit"
-        android:layout_width="145dp"
+        android:id="@+id/btExitCreateLobby"
+        android:layout_width="327dp"
         android:layout_height="59dp"
+        android:layout_marginTop="644dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:text="@string/exit"
         android:textColor="@color/grey"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tvHeadline"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.928" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -77,17 +75,60 @@
         app:layout_constraintTop_toBottomOf="@+id/tvHeadline"
         app:srcCompat="@drawable/brain_emoji" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPlayers"
-        android:layout_width="327dp"
-        android:layout_height="260dp"
-        android:background="@color/white"
-        android:scrollbars="vertical"
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lobby_name"
+        android:textColor="@color/grey"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.583"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.711" />
+        app:layout_constraintVertical_bias="0.541" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/category"
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.654" />
+
+    <EditText
+        android:id="@+id/etLobbyName"
+        android:layout_width="202dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.856"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.547" />
+
+    <Spinner
+        android:id="@+id/spCategories"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:scrollbarSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.805"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.639" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://192.168.43.152:8090/auth/register";
+                String url = "https://brain.b34nb01z.club/auth/register";
                 final JSONObject body = new JSONObject();
                 try {
                     body.put("username", name.getText());

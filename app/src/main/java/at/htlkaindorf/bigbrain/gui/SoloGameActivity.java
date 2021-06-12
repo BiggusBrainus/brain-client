@@ -1,12 +1,13 @@
 package at.htlkaindorf.bigbrain.gui;
 
+import android.os.Bundle;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,34 +16,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import at.htlkaindorf.bigbrain.adapter.AllLobbiesAdapter;
-import at.htlkaindorf.bigbrain.adapter.WaitingRoomAdapter;
-import at.htlkaindorf.bigbrain.beans.Lobby;
-import at.htlkaindorf.bigbrain.beans.Question;
-import at.htlkaindorf.bigbrain.beans.Rank;
-import at.htlkaindorf.bigbrain.beans.User;
-import at.htlkaindorf.bigbrain.beans.WebSocket;
 import at.htlkaindorf.bigbrain.bl.ButtonSize;
 import at.htlkaindorf.bigbrain.bl.Game;
 import at.htlkaindorf.bigbrain.R;
 
-public class GameActivity extends AppCompatActivity {
+public class SoloGameActivity extends AppCompatActivity {
     // Text
     private TextView question;
     private TextView round;
@@ -66,13 +50,6 @@ public class GameActivity extends AppCompatActivity {
     // int
     private int counter = 0;
 
-    // Question
-    String rightAnswer = "";
-    List<String> wrong;
-    List<Button> buttonList = new ArrayList<>();
-    User user;
-    boolean firstQuestion = true;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,108 +66,59 @@ public class GameActivity extends AppCompatActivity {
         bottomLeft = findViewById(R.id.btBottomLeft);
         bottomRight = findViewById(R.id.btBottomRight);
 
+        // Set text to test that right answers become green and wrong answers become red
+        String rightAnswer = "Right";
+        List<String> wrong = Arrays.asList("Wrong", "Wrong", "Wrong");
+
+        List<Button> buttonList = new ArrayList<>();
         buttonList.add(topLeft);
         buttonList.add(topRight);
         buttonList.add(bottomLeft);
         buttonList.add(bottomRight);
+        List<String> questionList = new ArrayList<>();
 
-        // Get user variable
-        Intent i = getIntent();
-        user = i.getParcelableExtra("user");
-
-        WebSocket.bindGame(this);
+        Intent intent = getIntent();
+        int rounds = intent.getIntExtra("rounds", 0);
+        counter += 1;
+        round.setText(counter + " / " + rounds);
         setDefaultValues();
+        questionList.clear();
+        questionList.addAll(wrong);
+        questionList.add(rightAnswer);
+        setAnswersOnButtons(buttonList, questionList);
+        checkNumberOfAnsweres(wrong);
+
 
         topLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(topLeft);
+                checkAnswer(topLeft, rightAnswer, questionList,  wrong, buttonList);
             }
         });
 
         topRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(topRight);
+                checkAnswer(topRight, rightAnswer, questionList,  wrong, buttonList);
             }
         });
 
         bottomLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(bottomLeft);
+                checkAnswer(bottomLeft, rightAnswer, questionList,  wrong, buttonList);
             }
         });
 
         bottomRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer(bottomRight);
+                checkAnswer(bottomRight, rightAnswer, questionList,  wrong, buttonList);
             }
         });
-    }
-
-    public void nextQuestion(JSONObject jObject){
-        if(!firstQuestion){
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }else{
-            firstQuestion = false;
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Question questionFromJ;
-                Gson gson = new Gson();
-                Type listType = new TypeToken<Question>() {}.getType();
-                try {
-                    questionFromJ = gson.fromJson(jObject.get("question").toString(), listType);
-                    rightAnswer = questionFromJ.getCorrect();
-                    wrong = questionFromJ.getWrong();
-                    question.setText(questionFromJ.getQuestion());
-
-                    counter += 1;
-                    round.setText(counter + " / " + 5);
-
-                    List<String> questionList = new ArrayList<>();
-                    setDefaultValues();
-                    questionList.clear();
-                    questionList.addAll(wrong);
-                    questionList.add(rightAnswer);
-                    setAnswersOnButtons(buttonList, questionList);
-                    checkNumberOfAnsweres(wrong);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void endOfGame(JSONObject jObject){
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Rank>>() {}.getType();
-            ArrayList<Rank> rankList = gson.fromJson(jObject.get("ranking").toString(), listType);
-            Intent intent = new Intent(this, GameFinishActivity.class);
-            intent.putParcelableArrayListExtra("ranking", rankList);
-            startActivityForResult(intent, 11);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setDefaultValues(){
-        timer.setText("");
-
         topLeft.setClickable(true);
         topRight.setClickable(true);
         bottomLeft.setClickable(true);
@@ -250,38 +178,45 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void checkAnswer(Button bt){
+    private void checkAnswer(Button bt, String rightAnswer, List<String> questionList, List<String> wrong, List<Button> buttonList){
         String text = bt.getText().toString();
         Drawable drawable = bt.getBackground();
         if(rightAnswer.equals(text)){
             DrawableCompat.setTint(drawable, getColor(R.color.correct));
         }else{
-            DrawableCompat.setTint(drawable, getColor(R.color.correct));
             DrawableCompat.setTint(drawable, getColor(R.color.wrong));
         }
-
-        WebSocket.send(String.format("{\"action\":\"ANSWER\",\"question\":\"%d\",\"token\":\"%s\",\"answer\":\"%s\"}", counter-1, user.getToken(), bt.getText()));
 
         topLeft.setClickable(false);
         topRight.setClickable(false);
         bottomLeft.setClickable(false);
         bottomRight.setClickable(false);
+        new CountDownTimer(3000, 1000){
+            @Override
+            public void onTick(long l) {
+                timer.setText(l / 1000 + " s");
+            }
 
-        timer.setText("Waiting for other Players...");
-        Intent intent = getIntent();
-        int rounds = intent.getIntExtra("rounds", 0);
-        if(counter <= rounds){
-            round.setText(counter + " / " + rounds);
-        }
-    }
+            @Override
+            public void onFinish() {
+                timer.setText("");
+                counter += 1;
+                Intent intent = getIntent();
+                int rounds = intent.getIntExtra("rounds", 0);
+                round.setText(counter + " / " + rounds);
+                if(counter <= rounds){
+                    //wrong.remove(wrong.size()-1);
+                    setDefaultValues();
+                    questionList.clear();
+                    questionList.addAll(wrong);
+                    questionList.add(rightAnswer);
+                    setAnswersOnButtons(buttonList, questionList);
+                    checkNumberOfAnsweres(wrong);
+                }else{
+                    finish();
+                }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Weiterleiten
-        Intent intent = new Intent();
-        intent.putExtra("exit", data.getStringExtra("exit"));
-        setResult(10, intent);
-        finish();
+            }
+        }.start();
     }
 }

@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.app.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,9 +32,11 @@ import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.LobbyHolder;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.gui.AllLobbiesActivity;
+import at.htlkaindorf.bigbrain.gui.SettingsActivity;
+import at.htlkaindorf.bigbrain.gui.UserActivity;
 import at.htlkaindorf.bigbrain.gui.WaitingRoomActivity;
 
-public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> implements JsonResponseListener {
+public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> {
     private AllLobbiesActivity parent;
     private List<Lobby> lobbyList;
     private List<Lobby> filteredList;
@@ -79,22 +83,8 @@ public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> impleme
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("test", view.toString());
                 TextView lobbyName = view.findViewById(R.id.tvLobbyName);
-                // Request to get lobby token
-                final JSONObject body = new JSONObject();
-                try {
-                    body.put("token", user.getToken());
-                    Log.i("token", user.getToken());
-                    body.put("lobby", lobbyName.getText());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                String url = "http://192.168.43.152:8090/lobbies/join";
-                ApiAccess access = new ApiAccess();
-                access.getData(url, parent, body, AllLobbiesAdapter.this, Request.Method.POST);
-
-
+                parent.sendJoinRequest(lobbyName.getText().toString());
             }
         });
     }
@@ -102,21 +92,5 @@ public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> impleme
     @Override
     public int getItemCount() {
         return filteredList.size();
-    }
-
-    @Override
-    public void onSuccessJson(String response) {
-        JSONObject jObject;
-        try {
-            jObject = new JSONObject(response);
-            // Weiterleiten zum WaitingRoom
-            Intent intent = new Intent(parent, WaitingRoomActivity.class);
-            intent.putExtra("user", user);
-            parent.startActivity(intent);
-            parent.finish();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -78,7 +78,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
 
         // Login Request
         // Create data for request
-        String url = "http://192.168.43.152:8090/lobbies/get";
+        String url = "https://brain.b34nb01z.club/lobbies/get";
         final JSONObject body = new JSONObject();
 
         ApiAccess access = new ApiAccess();
@@ -113,6 +113,16 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(parent, CreateLobbyActivity.class);
+                intent.putExtra("user", user);
+                startActivityForResult(intent, 42);
+            }
+        });
+
+        // To use onQueryTextChange not only if the search icon is pressed
+        searchbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
@@ -132,6 +142,21 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         });
     }
 
+    // To use .onActivityResult() the intent has to be sent from an Activity
+    public void sendJoinRequest(String lobbyName) {
+        // Request to get lobby token
+        final JSONObject body = new JSONObject();
+        try {
+            body.put("token", user.getToken());
+            body.put("lobby", lobbyName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = "https://brain.b34nb01z.club/lobbies/join";
+        ApiAccess access = new ApiAccess();
+        access.getData(url, parent, body, AllLobbiesActivity.this, Request.Method.POST);
+    }
+
     @Override
     public void onSuccessJson(String response) {
         JSONObject jObject;
@@ -139,13 +164,35 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
             jObject = new JSONObject(response);
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<Lobby>>() {}.getType();
+            // If no "lobbies" in jObject --> Error
             List<Lobby> lobbyList = gson.fromJson(jObject.get("lobbies").toString(), listType);
             lobbies.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
             ala = new AllLobbiesAdapter(this, lobbyList, user);
             lobbies.setAdapter(ala);
             ala.filterLobbies(searchbar.getQuery().toString());
         } catch (JSONException e) {
-            e.printStackTrace();
+            // Weiterleiten zum WaitingRoom
+            Intent intent = new Intent(parent, WaitingRoomActivity.class);
+            intent.putExtra("user", user);
+            startActivityForResult(intent, 9);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 9:
+                if (data.getStringExtra("exit").equals("menu")){
+                    finish();
+                }
+                break;
+            case 42:
+                // Weiterleiten zum WaitingRoom
+                Intent intent = new Intent(parent, WaitingRoomActivity.class);
+                intent.putExtra("user", user);
+                startActivityForResult(intent, 9);
+                break;
         }
     }
 

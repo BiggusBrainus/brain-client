@@ -30,4 +30,15 @@
 
     <string name="waiting">Waiting Room</string>
     <string name="start">Start</string>
+    <string name="exit">Exit</string>
+
+    <string name="ranking">Ranking</string>
+
+    <string name="game_finsih">Game Finished</string>
+    <string name="exit_to_menu">Exit to Menu</string>
+    <string name="exit_to_lobby">Exit to Lobby</string>
+
+    <string name="create_lobby">Create Lobby</string>
+    <string name="lobby_name">Lobby Name:</string>
+    <string name="category">Category:</string>
 </resources>

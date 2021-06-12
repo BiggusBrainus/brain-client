@@ -42,6 +42,7 @@ import tech.gusavila92.websocketclient.WebSocketClient;
 public class WaitingRoomActivity extends AppCompatActivity implements JsonResponseListener {
     // Buttons
     private Button start;
+    private Button exit;
 
     // RecyclerView
     private RecyclerView players;
@@ -60,6 +61,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         WebSocket.createWebSocketClient();
 
         start = findViewById(R.id.btStart);
+        exit = findViewById(R.id.btExit);
         players = findViewById(R.id.rvPlayers);
 
         Intent i = getIntent();
@@ -71,7 +73,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
             @Override
             public void onClick(View view) {
                 User user = i.getParcelableExtra("user");
-                String url = "http://192.168.43.152:8090/lobbies/start";
+                String url = "https://brain.b34nb01z.club/lobbies/start";
                 final JSONObject body = new JSONObject();
                 try {
                     body.put("token", user.getToken());
@@ -80,6 +82,19 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
                 }
                 ApiAccess access = new ApiAccess();
                 access.getData(url, getApplicationContext(), body, WaitingRoomActivity.this, Request.Method.POST);
+            }
+        });
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // User leavt aus lobby
+                leave();
+
+                Intent intent = new Intent();
+                intent.putExtra("exit", "DontWriteMenuHere");
+                setResult(9, intent);
+                finish();
             }
         });
     }
@@ -107,17 +122,53 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                // Get user variable
+                Intent i = getIntent();
+                User user = i.getParcelableExtra("user");
+
                 Intent intent = new Intent(parent, GameActivity.class);
-                intent.putExtra("rounds", 3);
-                startActivity(intent);
-                finish();
+                intent.putExtra("user", user);
+                startActivityForResult(intent, 10);
             }
         });
 
     }
 
+    public void leave(){
+        Intent i = getIntent();
+        User user = i.getParcelableExtra("user");
+
+        final JSONObject body = new JSONObject();
+        try {
+            body.put("token", user.getToken());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = "https://brain.b34nb01z.club/lobbies/leave";
+        ApiAccess access = new ApiAccess();
+        access.getData(url, parent, body, WaitingRoomActivity.this, Request.Method.POST);
+    }
+
     @Override
     public void onSuccessJson(String response) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(data.getStringExtra("exit")){
+            case  "lobby":
+                break;
+            case "menu":
+                // User leavt aus lobby
+                leave();
+
+                Intent intent = new Intent();
+                intent.putExtra("exit", data.getStringExtra("exit"));
+                setResult(9, intent);
+                finish();
+                break;
+        }
     }
 }

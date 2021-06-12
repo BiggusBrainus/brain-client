@@ -40,7 +40,7 @@ public class WebSocket {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.43.152:8090/ws/game");
+            uri = new URI("wss://brain.b34nb01z.club/ws/game");
         }
         catch (URISyntaxException e) {
             e.printStackTrace();
@@ -71,6 +71,9 @@ public class WebSocket {
                                 Thread.sleep(10);
                             }
                             ga.nextQuestion(jObject);
+                            break;
+                        case "END_OF_GAME":
+                            ga.endOfGame(jObject);
                             break;
                     }
                 } catch (Exception e){

@@ -16,7 +16,7 @@
         android:background="@color/turquoise"
         android:editable="false"
         android:gravity="center"
-        android:text="@string/waiting"
+        android:text="@string/ranking"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"

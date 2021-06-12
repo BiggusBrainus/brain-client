@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
 
                 // Login Request
                 // Create data for request
-                String url = "http://192.168.43.152:8090/auth/login";
+                String url = "https://brain.b34nb01z.club/auth/login";
                 final JSONObject body = new JSONObject();
                 try {
                     body.put("username", username.getText());

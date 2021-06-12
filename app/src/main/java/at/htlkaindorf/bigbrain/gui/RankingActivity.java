@@ -52,12 +52,12 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
         navigationbarRanking.setColorFilter(Color.rgb(93, 93, 93));
 
 
-        testen();
-        /*String url = "http://192.168.43.152:8090/lobbies/get";
+        //testen();
+        String url = "https://brain.b34nb01z.club/lobbies/get";
         final JSONObject body = new JSONObject();
 
         ApiAccess access = new ApiAccess();
-        access.getData(url, getApplicationContext(), RankingActivity.this, Request.Method.GET);*/
+        access.getData(url, getApplicationContext(), RankingActivity.this, Request.Method.GET);
 
         navigationbarHome.setOnClickListener(new View.OnClickListener() {
             @Override
