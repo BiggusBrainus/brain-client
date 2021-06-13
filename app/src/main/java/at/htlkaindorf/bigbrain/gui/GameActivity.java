@@ -252,11 +252,25 @@ public class GameActivity extends AppCompatActivity {
 
     private void checkAnswer(Button bt){
         String text = bt.getText().toString();
-        Drawable drawable = bt.getBackground();
+        // set the colors
         if(rightAnswer.equals(text)){
+            Drawable drawable = bt.getBackground();
             DrawableCompat.setTint(drawable, getColor(R.color.correct));
         }else{
-            DrawableCompat.setTint(drawable, getColor(R.color.correct));
+            if(topRight.getText().toString().equals(rightAnswer)){
+                Drawable drawable = topRight.getBackground();
+                DrawableCompat.setTint(drawable, getColor(R.color.correct));
+            }else if(topLeft.getText().toString().equals(rightAnswer)){
+                Drawable drawable = topLeft.getBackground();
+                DrawableCompat.setTint(drawable, getColor(R.color.correct));
+            }else if(bottomRight.getText().toString().equals(rightAnswer)){
+                Drawable drawable = bottomRight.getBackground();
+                DrawableCompat.setTint(drawable, getColor(R.color.correct));
+            }else if(bottomLeft.getText().toString().equals(rightAnswer)){
+                Drawable drawable = bottomLeft.getBackground();
+                DrawableCompat.setTint(drawable, getColor(R.color.correct));
+            }
+            Drawable drawable = bt.getBackground();
             DrawableCompat.setTint(drawable, getColor(R.color.wrong));
         }
 
