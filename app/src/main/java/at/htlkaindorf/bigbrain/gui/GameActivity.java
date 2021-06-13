@@ -292,6 +292,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("test", data.getStringExtra("exit"));
         // Weiterleiten
         Intent intent = new Intent();
         intent.putExtra("exit", data.getStringExtra("exit"));

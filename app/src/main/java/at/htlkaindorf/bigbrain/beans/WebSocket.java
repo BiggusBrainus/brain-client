@@ -58,6 +58,7 @@ public class WebSocket {
                 final String message = s;
                 try{
                     JSONObject jObject = new JSONObject(message);
+                    Log.i("Websocket says: ", message);
                     switch (jObject.get("action").toString()){
                         case "LOBBY_PLAYERS_UPDATE":
                             Log.i("asdf", jObject.get("players").toString());
@@ -74,6 +75,7 @@ public class WebSocket {
                             break;
                         case "END_OF_GAME":
                             ga.endOfGame(jObject);
+                            ga = null;
                             break;
                     }
                 } catch (Exception e){

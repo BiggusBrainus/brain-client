@@ -51,7 +51,7 @@ public class GameFinishActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("back", "lobby");
+                intent.putExtra("exit", "lobby");
                 setResult(11, intent);
                 finish();
             }

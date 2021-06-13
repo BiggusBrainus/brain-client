@@ -26,10 +26,12 @@ import java.util.stream.Collectors;
 
 import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.adapter.AllLobbiesAdapter;
+import at.htlkaindorf.bigbrain.adapter.RankingAdapter;
 import at.htlkaindorf.bigbrain.adapter.WaitingRoomAdapter;
 import at.htlkaindorf.bigbrain.api_access.ApiAccess;
 import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 import at.htlkaindorf.bigbrain.beans.Lobby;
+import at.htlkaindorf.bigbrain.beans.Rank;
 import at.htlkaindorf.bigbrain.beans.User;
 
 public class RankingActivity extends AppCompatActivity implements JsonResponseListener {
@@ -38,7 +40,7 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
     private ImageButton navigationbarRanking;
 
     // Adapter
-    private WaitingRoomAdapter wra;
+    private RankingAdapter ra;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
 
 
         //testen();
-        String url = "https://brain.b34nb01z.club/lobbies/get";
+        String url = "https://brain.b34nb01z.club/ranking/get";
         final JSONObject body = new JSONObject();
 
         ApiAccess access = new ApiAccess();
@@ -73,10 +75,10 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
         try {
             jObject = new JSONObject(response);
             Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<User>>() {}.getType();
-            List<User> playerList = gson.fromJson(jObject.get("players").toString(), listType);
+            Type listType = new TypeToken<ArrayList<Rank>>() {}.getType();
+            List<Rank> rankList = gson.fromJson(jObject.get("ranking").toString(), listType);
             ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            ranking.setAdapter(wra = new WaitingRoomAdapter(playerList.stream().map(User::getUsername).collect(Collectors.toList())));
+            ranking.setAdapter(ra = new RankingAdapter(rankList));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -85,9 +87,10 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
     // TODO just to test (without connection to the server)
     public void testen(){
         User u = new User("Hermann", "hermann@gmail.com", "WowEinToken");
-        List<User> ul = new ArrayList<>();
-        ul.add(u);
-        ranking.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        ranking.setAdapter(wra = new WaitingRoomAdapter(ul.stream().map(User::getUsername).collect(Collectors.toList())));
+        Rank r = new Rank(u, (long) 10000);
+        List<Rank> rl = new ArrayList<>();
+        rl.add(r);
+        ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        ranking.setAdapter(ra = new RankingAdapter(rl));
     }
 }

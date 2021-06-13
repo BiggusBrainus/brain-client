@@ -38,8 +38,8 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
     public void onBindViewHolder(@NonNull RankingHolder holder, int position) {
         Rank rank = rankList.get(position);
 
-        holder.getUsername().setText(rank.getUser().toString());
-        holder.getScore().setText(rank.getScore().toString() + "Points");
+        holder.getUsername().setText(rank.getUser().getUsername().toString());
+        holder.getScore().setText(rank.getScore().toString() + " Points");
     }
 
     @Override
