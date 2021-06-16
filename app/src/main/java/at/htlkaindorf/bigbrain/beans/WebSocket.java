@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import at.htlkaindorf.bigbrain.adapter.WaitingRoomAdapter;
 import at.htlkaindorf.bigbrain.gui.GameActivity;
+import at.htlkaindorf.bigbrain.gui.MainActivity;
 import at.htlkaindorf.bigbrain.gui.WaitingRoomActivity;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
@@ -26,6 +27,7 @@ public class WebSocket {
     private static WebSocketClient webSocketClient;
     public static WaitingRoomActivity wr;
     public static GameActivity ga;
+    public static MainActivity ma;
 
     public static void bindWaitingRoom(WaitingRoomActivity wait){
         wr = wait;
@@ -33,6 +35,10 @@ public class WebSocket {
 
     public static void bindGame(GameActivity game){
         ga = game;
+    }
+
+    public static void bindMain(MainActivity main){
+        ma = main;
     }
 
     // Alles für die Websockets
@@ -62,10 +68,16 @@ public class WebSocket {
                     switch (jObject.get("action").toString()){
                         case "LOBBY_PLAYERS_UPDATE":
                             Log.i("asdf", jObject.get("players").toString());
-                            wr.updatePlayer(jObject);
+                            if(wr != null){
+                                wr.updatePlayer(jObject);
+                            }else if(ma != null){
+                                ma.startGameActivity();
+                            }
                             break;
                         case "START_GAME":
-                            wr.startGame();
+                            if(wr != null){
+                                wr.startGame();
+                            }
                             break;
                         case "NEXT_QUESTION":
                             while(ga == null){
@@ -76,6 +88,8 @@ public class WebSocket {
                         case "END_OF_GAME":
                             ga.endOfGame(jObject);
                             ga = null;
+                            wr = null;
+                            ma = null;
                             break;
                     }
                 } catch (Exception e){

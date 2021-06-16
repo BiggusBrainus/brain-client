@@ -33,9 +33,15 @@ public class GameFinishActivity extends AppCompatActivity {
         exitToLobby = findViewById(R.id.btExitToLobby);
 
         Intent i = getIntent();
+        if(i.getBooleanExtra("soloGame", false)){
+            Intent intent = new Intent();
+            intent.putExtra("exit", "menu");
+            setResult(11, intent);
+            finish();
+        }
         List<Rank> rankList = i.getParcelableArrayListExtra("ranking");
         ranking.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        ranking.setAdapter(ra = new RankingAdapter(rankList));
+        ranking.setAdapter(ra = new RankingAdapter(rankList, "Points"));
 
         exitToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,5 +62,13 @@ public class GameFinishActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("exit", "lobby");
+        setResult(11, intent);
+        finish();
     }
 }

@@ -1,19 +1,21 @@
 package at.htlkaindorf.bigbrain.gui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,10 +28,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
 
 import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.adapter.AllLobbiesAdapter;
@@ -42,8 +41,9 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
     private final Activity parent = this;
 
     // Buttons
-    private Button join;
+    private Button exit;
     private Button create;
+    private Button joinPrivate;
 
     // SearchView
     private SearchView searchbar;
@@ -54,20 +54,23 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
     // Adapter
     private AllLobbiesAdapter ala;
 
-    // Executor
-    private Executor executor;
-
     // User
     private User user;
+
+    // Thread
+    private Thread thread;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_all_lobbies);
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        join = findViewById(R.id.btJoin);
+        joinPrivate = findViewById(R.id.btJoinPrivate);
+        exit = findViewById(R.id.btExitAllLobbies);
         create = findViewById(R.id.btCreate);
         searchbar = findViewById(R.id.svSearchbar);
         lobbies = findViewById(R.id.rvLobbies);
@@ -82,8 +85,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         final JSONObject body = new JSONObject();
 
         ApiAccess access = new ApiAccess();
-        executor = this.getMainExecutor();
-        Thread thread = new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true){
@@ -92,6 +94,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        break;
                     }
                 }
             }
@@ -101,12 +104,56 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         // Um code offline zu testen
         //testen();
 
-        // TODO
-        lobbies.setOnClickListener(new View.OnClickListener() {
+        joinPrivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("test", "Activity");
-                //TODO
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(parent);
+                View privateLobby = li.inflate(R.layout.altert_private_lobby, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(parent);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(privateLobby);
+
+                final EditText userInput = (EditText) privateLobby
+                        .findViewById(R.id.etUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        String lobbyName = userInput.getText().toString();
+                                        if(!lobbyName.equals("")){
+                                            sendJoinRequest(lobbyName);
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+            }
+        });
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                thread.interrupt();
+                finish();
             }
         });
 
@@ -115,6 +162,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
             public void onClick(View view) {
                 Intent intent = new Intent(parent, CreateLobbyActivity.class);
                 intent.putExtra("user", user);
+                intent.putExtra("soloGame", false);
                 startActivityForResult(intent, 42);
             }
         });
@@ -123,7 +171,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         searchbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                searchbar.setIconified(false);
             }
         });
 
@@ -162,19 +210,26 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         JSONObject jObject;
         try {
             jObject = new JSONObject(response);
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Lobby>>() {}.getType();
-            // If no "lobbies" in jObject --> Error
-            List<Lobby> lobbyList = gson.fromJson(jObject.get("lobbies").toString(), listType);
-            lobbies.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-            ala = new AllLobbiesAdapter(this, lobbyList, user);
-            lobbies.setAdapter(ala);
-            ala.filterLobbies(searchbar.getQuery().toString());
+            try {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Lobby>>() {}.getType();
+                // If no "lobbies" in jObject --> Error
+                List<Lobby> lobbyList = gson.fromJson(jObject.get("lobbies").toString(), listType);
+                lobbies.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
+                ala = new AllLobbiesAdapter(this, lobbyList, user);
+                lobbies.setAdapter(ala);
+                ala.filterLobbies(searchbar.getQuery().toString());
+            } catch (JSONException e) {
+                if((boolean) jObject.get("success")){
+                    // Weiterleiten zum WaitingRoom
+                    thread.interrupt();
+                    Intent intent = new Intent(parent, WaitingRoomActivity.class);
+                    intent.putExtra("user", user);
+                    startActivityForResult(intent, 9);
+                }
+            }
         } catch (JSONException e) {
-            // Weiterleiten zum WaitingRoom
-            Intent intent = new Intent(parent, WaitingRoomActivity.class);
-            intent.putExtra("user", user);
-            startActivityForResult(intent, 9);
+            e.printStackTrace();
         }
     }
 
@@ -188,10 +243,14 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 }
                 break;
             case 42:
-                // Weiterleiten zum WaitingRoom
-                Intent intent = new Intent(parent, WaitingRoomActivity.class);
-                intent.putExtra("user", user);
-                startActivityForResult(intent, 9);
+                if (!data.getStringExtra("exit").equals("lobby")){
+                    Intent i = getIntent();
+                    // Weiterleiten zum WaitingRoom
+                    Intent intent = new Intent(parent, WaitingRoomActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("soloGame", i.getBooleanExtra("soloGame", false));
+                    startActivityForResult(intent, 9);
+                }
                 break;
         }
     }

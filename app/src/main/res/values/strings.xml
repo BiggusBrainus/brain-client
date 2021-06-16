@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BigBrain</string>
     <string name="headline">BigBrain</string>
-    <string name="offline">Offline</string>
+    <string name="solo">Solo</string>
     <string name="online">Multiplayer</string>
     <string name="statistics">Statistics</string>
     <string name="username">Username:</string>
@@ -41,4 +41,7 @@
     <string name="create_lobby">Create Lobby</string>
     <string name="lobby_name">Lobby Name:</string>
     <string name="category">Category:</string>
+    <string name="create_private">Private Lobby: </string>
+
+    <string name="private_lobby">Private Lobby Name: </string>
 </resources>

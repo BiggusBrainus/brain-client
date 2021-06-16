@@ -2,6 +2,7 @@ package at.htlkaindorf.bigbrain.gui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,10 +13,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import at.htlkaindorf.bigbrain.R;
-import at.htlkaindorf.bigbrain.beans.User;
+import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import at.htlkaindorf.bigbrain.R;
+import at.htlkaindorf.bigbrain.adapter.AllLobbiesAdapter;
+import at.htlkaindorf.bigbrain.api_access.ApiAccess;
+import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
+import at.htlkaindorf.bigbrain.beans.Category;
+import at.htlkaindorf.bigbrain.beans.Lobby;
+import at.htlkaindorf.bigbrain.beans.User;
+import at.htlkaindorf.bigbrain.beans.WebSocket;
+
+public class MainActivity extends AppCompatActivity implements JsonResponseListener{
     private final Activity parent = this;
 
     // Navigationbar
@@ -25,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Menu Options
     private Button multiplayer;
-    private Button offlineplayer;
-    private Button statistics;
+    private Button solo;
 
     // Create User
     private User user = new User();
+
+    // Boolean for solo game
+    private boolean lobbyCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Navigationbar
         navigationbarHome = findViewById(R.id.ibNavigationbarHome);
-        //navigationbarUser = findViewById(R.id.ibNavigationbarUser);
         navigatiobbarRanking = findViewById(R.id.ibNavigationbarRanking);
 
         // Menu Options
         multiplayer = findViewById(R.id.btMultiplayer);
-        offlineplayer = findViewById(R.id.btOfflineplayer);
-        statistics = findViewById(R.id.btStatistics);
+        solo = findViewById(R.id.btSolo);
 
         navigationbarHome.setColorFilter(Color.rgb(93, 93, 93));
 
@@ -58,16 +79,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 1);
 
         }
-
-
-        /*navigationbarUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(parent, UserActivity.class);
-                intent.putExtra("user", user);
-                startActivityForResult(intent, 2);
-            }
-        });*/
 
         navigatiobbarRanking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,25 +94,35 @@ public class MainActivity extends AppCompatActivity {
                 // Lobby
                 Intent intent = new Intent(parent, AllLobbiesActivity.class);
                 intent.putExtra("user", user);
+                intent.putExtra("soloGame", false);
                 startActivityForResult(intent, 4);
             }
         });
 
-        offlineplayer.setOnClickListener(new View.OnClickListener() {
+        solo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Auf Offline Screen wechseln
-                Log.i("Test", "Offline");
-                // TODO
-            }
-        });
+                // Create lobby
+                String url = "https://brain.b34nb01z.club/lobbies/create";
+                final JSONObject body = new JSONObject();
+                final JSONObject lobby = new JSONObject();
+                try {
+                    // get random category
+                    Random rand = new Random();
+                    int category = rand.nextInt(24) + 23;
+                    int num = rand.nextInt(1_000_000_000);
 
-        statistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Auf Statistics Screen wechseln
-                Log.i("Test", "Statistics");
-                // TODO
+                    lobby.put("name", user.getUsername() + num);
+                    lobby.put("hidden", true);
+                    body.put("token", user.getToken());
+                    body.put("lobby", lobby);
+                    body.putOpt("categories",new JSONArray(){{ put(category); }});
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                lobbyCreated = true;
+                ApiAccess access = new ApiAccess();
+                access.getData(url, getApplicationContext(), body, MainActivity.this, Request.Method.POST);
             }
         });
     }
@@ -125,6 +146,80 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(intent, 2);
                 }
                 break;
+            case 70:
+                // Leave Lobby
+                final JSONObject body = new JSONObject();
+                try {
+                    body.put("token", user.getToken());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String url = "https://brain.b34nb01z.club/lobbies/leave";
+                ApiAccess access = new ApiAccess();
+                access.getData(url, parent, body, MainActivity.this, Request.Method.POST);
+                break;
+        }
+    }
+
+    public void startGameActivity(){
+        // Start Game
+        String url = "https://brain.b34nb01z.club/lobbies/start";
+        final JSONObject body = new JSONObject();
+        try {
+            body.put("token", user.getToken());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApiAccess access = new ApiAccess();
+        access.getData(url, getApplicationContext(), body, MainActivity.this, Request.Method.POST);
+
+        // Start game activity
+        Intent intent = new Intent(parent, GameActivity.class);
+        intent.putExtra("user", user);
+        intent.putExtra("soloGame", true);
+        startActivityForResult(intent, 70);
+    }
+
+    @Override
+    public void onSuccessJson(String response) {
+        JSONObject jObject;
+        try {
+            jObject = new JSONObject(response);
+
+            if((boolean) jObject.get("success") && lobbyCreated){
+                lobbyCreated = false;
+                Log.i("Create Websocket", user.getToken());
+                // Create Websocket
+                WebSocket.bindMain(this);
+                WebSocket.createWebSocketClient();
+                WebSocket.send(String.format("{\"action\" : \"CONNECT_TO_LOBBY\",\"token\" : \"%s\"}", user.getToken()));
+
+                Log.i("Start game", user.getToken());
+            }else if(!((boolean) jObject.get("success")) && lobbyCreated){
+                // Lobby name was already taken --> create new lobby
+                String url = "https://brain.b34nb01z.club/lobbies/create";
+                final JSONObject body = new JSONObject();
+                final JSONObject lobby = new JSONObject();
+                try {
+                    // get random category
+                    Random rand = new Random();
+                    int category = rand.nextInt(24) + 23;
+                    int num = rand.nextInt(1_000_000_000);
+
+                    lobby.put("name", user.getUsername() + num);
+                    lobby.put("hidden", true);
+                    body.put("token", user.getToken());
+                    body.put("lobby", lobby);
+                    body.putOpt("categories",new JSONArray(){{ put(category); }});
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                lobbyCreated = true;
+                ApiAccess access = new ApiAccess();
+                access.getData(url, getApplicationContext(), body, MainActivity.this, Request.Method.POST);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -25,8 +25,8 @@
 
     <TextView
         android:id="@+id/tvQuestion"
-        android:layout_width="350sp"
-        android:layout_height="250sp"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
         android:layout_marginTop="128dp"
         android:background="@drawable/rounded_corner"
         android:editable="false"

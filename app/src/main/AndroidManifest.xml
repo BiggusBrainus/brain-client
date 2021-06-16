@@ -10,17 +10,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BigBrain"
         android:usesCleartextTraffic="true">
-        <activity android:name=".gui.CreateLobbyActivity"></activity>
-        <activity android:name=".gui.GameFinishActivity"></activity>
-        <activity android:name=".gui.RankingActivity"></activity>
-        <activity android:name=".gui.WaitingRoomActivity"></activity>
-        <activity android:name=".gui.AllLobbiesActivity"></activity>
-        <activity android:name=".gui.RegisterActivity"></activity>
-        <activity android:name=".gui.LoginActivity"></activity>
-        <activity android:name=".gui.UserActivity"></activity>
-        <activity android:name=".gui.SettingsActivity"></activity>
-        <activity android:name=".gui.GameActivity"></activity>
-        <activity android:name=".gui.MainActivity">
+        <activity android:name=".gui.CreateLobbyActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.GameFinishActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.RankingActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.WaitingRoomActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.AllLobbiesActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.RegisterActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.LoginActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.UserActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.SettingsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.GameActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".gui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

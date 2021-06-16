@@ -18,9 +18,11 @@ import at.htlkaindorf.bigbrain.beans.RankingHolder;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
     private List<Rank> rankList = new ArrayList<>();
+    private String unit;
 
-    public RankingAdapter(List<Rank> rankList) {
+    public RankingAdapter(List<Rank> rankList, String unit) {
         this.rankList = rankList;
+        this.unit = unit;
     }
 
     @NonNull
@@ -39,7 +41,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
         Rank rank = rankList.get(position);
 
         holder.getUsername().setText(rank.getUser().getUsername().toString());
-        holder.getScore().setText(rank.getScore().toString() + " Points");
+        holder.getScore().setText(rank.getScore().toString() + " " + unit);
     }
 
     @Override

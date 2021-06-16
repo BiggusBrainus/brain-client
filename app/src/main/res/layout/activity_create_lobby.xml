@@ -15,7 +15,7 @@
         android:background="@color/turquoise"
         android:editable="false"
         android:gravity="center"
-        android:text="@string/waiting"
+        android:text="@string/create_lobby"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -27,31 +27,31 @@
         android:id="@+id/btCreateLobby"
         android:layout_width="327dp"
         android:layout_height="59dp"
-        android:layout_marginTop="568dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:text="@string/create"
         android:textColor="@color/grey"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/btExitCreateLobby"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvHeadline" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btExitCreateLobby"
         android:layout_width="327dp"
         android:layout_height="59dp"
-        android:layout_marginTop="644dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:text="@string/exit"
         android:textColor="@color/grey"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.956" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -98,10 +98,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.654" />
+        app:layout_constraintVertical_bias="0.634" />
 
     <EditText
         android:id="@+id/etLobbyName"
@@ -109,7 +109,6 @@
         android:layout_height="40dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         android:textColor="@color/grey"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -122,13 +121,39 @@
     <Spinner
         android:id="@+id/spCategories"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:scrollbarSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.805"
+        app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.639" />
+        app:layout_constraintVertical_bias="0.635" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_private"
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.723" />
+
+    <CheckBox
+        android:id="@+id/cbPrivateLobby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.724" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

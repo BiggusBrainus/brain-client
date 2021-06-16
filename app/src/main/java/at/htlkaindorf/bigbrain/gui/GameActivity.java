@@ -171,6 +171,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void endOfGame(JSONObject jObject){
+        Intent i = getIntent();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -182,6 +183,7 @@ public class GameActivity extends AppCompatActivity {
             ArrayList<Rank> rankList = gson.fromJson(jObject.get("ranking").toString(), listType);
             Intent intent = new Intent(this, GameFinishActivity.class);
             intent.putParcelableArrayListExtra("ranking", rankList);
+            intent.putExtra("soloGame", i.getBooleanExtra("soloGame", false));
             startActivityForResult(intent, 11);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -295,8 +297,18 @@ public class GameActivity extends AppCompatActivity {
         Log.i("test", data.getStringExtra("exit"));
         // Weiterleiten
         Intent intent = new Intent();
-        intent.putExtra("exit", data.getStringExtra("exit"));
-        setResult(10, intent);
+        Intent i = getIntent();
+        if(i.getBooleanExtra("soloGame", false)){
+            setResult(70, intent);
+        }else{
+            intent.putExtra("exit", data.getStringExtra("exit"));
+            setResult(10, intent);
+        }
+
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

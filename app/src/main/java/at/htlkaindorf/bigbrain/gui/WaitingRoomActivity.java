@@ -56,7 +56,10 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_waiting_room);
+
+        Intent i = getIntent();
         WebSocket.bindWaitingRoom(this);
         WebSocket.createWebSocketClient();
 
@@ -64,7 +67,6 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         exit = findViewById(R.id.btExit);
         players = findViewById(R.id.rvPlayers);
 
-        Intent i = getIntent();
         User user = i.getParcelableExtra("user");
 
         WebSocket.send(String.format("{\"action\" : \"CONNECT_TO_LOBBY\",\"token\" : \"%s\"}", user.getToken()));
@@ -125,8 +127,8 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
                 // Get user variable
                 Intent i = getIntent();
                 User user = i.getParcelableExtra("user");
-
                 Intent intent = new Intent(parent, GameActivity.class);
+                intent.putExtra("soloGame", false);
                 intent.putExtra("user", user);
                 startActivityForResult(intent, 10);
             }
@@ -170,5 +172,14 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        leave();
+        Intent intent = new Intent();
+        intent.putExtra("exit", "lobby");
+        setResult(9, intent);
+        finish();
     }
 }

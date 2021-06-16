@@ -78,7 +78,7 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
             Type listType = new TypeToken<ArrayList<Rank>>() {}.getType();
             List<Rank> rankList = gson.fromJson(jObject.get("ranking").toString(), listType);
             ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            ranking.setAdapter(ra = new RankingAdapter(rankList));
+            ranking.setAdapter(ra = new RankingAdapter(rankList, "Wins"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,6 +91,6 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
         List<Rank> rl = new ArrayList<>();
         rl.add(r);
         ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        ranking.setAdapter(ra = new RankingAdapter(rl));
+        ranking.setAdapter(ra = new RankingAdapter(rl, "Wins"));
     }
 }

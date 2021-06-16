@@ -129,6 +129,10 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
         }
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     // TODO can be deleted. Only purpose is to test without connection to server
     public void testen(){
         Intent i = getIntent();
