@@ -36,6 +36,11 @@ import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.beans.WebSocket;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  23.03.2021
+ * Project:  BigBrain
+ * */
 public class MainActivity extends AppCompatActivity implements JsonResponseListener{
     private final Activity parent = this;
 
@@ -70,9 +75,7 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
 
         navigationbarHome.setColorFilter(Color.rgb(93, 93, 93));
 
-
-
-        // If User is not loged in
+        // Forward to LoginActivity
         if(user.getToken() == null){
             Intent intent = new Intent(parent, LoginActivity.class);
             intent.putExtra("user", user);
@@ -80,14 +83,17 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
 
         }
 
+        // ImageButton to forward to RankingActivity
         navigatiobbarRanking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(parent, RankingActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });
 
+        // Button to forward to AllLobiesActivity
         multiplayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
             }
         });
 
+        // Button to play a solo game
         solo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
                     body.put("lobby", lobby);
                     body.putOpt("categories",new JSONArray(){{ put(category); }});
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create lobby or body in OnClickListener of solo button in MainActivity");
                 }
                 lobbyCreated = true;
                 ApiAccess access = new ApiAccess();
@@ -127,33 +134,24 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
         });
     }
 
+    // To check the reult codes of the Activities
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
+            // requestCode of LoginActivity
             case 1:
-                user = data.getParcelableExtra("user");
-                Log.i("test", user.getToken());
                 break;
-            case 2:
-                String newActivity = data.getStringExtra("activity");
-                if(newActivity.equals("user")){
-                    Intent intent = new Intent(parent, UserActivity.class);
-                    intent.putExtra("user", user);
-                    startActivityForResult(intent, 2);
-                }else if(newActivity.equals("settings")){
-                    Intent intent = new Intent(parent, SettingsActivity.class);
-                    startActivityForResult(intent, 2);
-                }
-                break;
+            // requestCode of
             case 70:
-                // Leave Lobby
+                // Leave Lobby of the GameActivity for the solo game
                 final JSONObject body = new JSONObject();
                 try {
                     body.put("token", user.getToken());
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create body in onActivityResult in MainActivity");
                 }
+                // User leaves from lobby
                 String url = "https://brain.b34nb01z.club/lobbies/leave";
                 ApiAccess access = new ApiAccess();
                 access.getData(url, parent, body, MainActivity.this, Request.Method.POST);
@@ -161,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
         }
     }
 
+    // To start a game (only for solo game)
     public void startGameActivity(){
         // Start Game
         String url = "https://brain.b34nb01z.club/lobbies/start";
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
         try {
             body.put("token", user.getToken());
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't create body in startGameActivity in MainActivity");
         }
         ApiAccess access = new ApiAccess();
         access.getData(url, getApplicationContext(), body, MainActivity.this, Request.Method.POST);
@@ -185,16 +184,14 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
         JSONObject jObject;
         try {
             jObject = new JSONObject(response);
-
+            // To check if the creation of a lobby was successful
             if((boolean) jObject.get("success") && lobbyCreated){
                 lobbyCreated = false;
-                Log.i("Create Websocket", user.getToken());
                 // Create Websocket
                 WebSocket.bindMain(this);
                 WebSocket.createWebSocketClient();
+                // Connect user to lobby
                 WebSocket.send(String.format("{\"action\" : \"CONNECT_TO_LOBBY\",\"token\" : \"%s\"}", user.getToken()));
-
-                Log.i("Start game", user.getToken());
             }else if(!((boolean) jObject.get("success")) && lobbyCreated){
                 // Lobby name was already taken --> create new lobby
                 String url = "https://brain.b34nb01z.club/lobbies/create";
@@ -212,14 +209,14 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
                     body.put("lobby", lobby);
                     body.putOpt("categories",new JSONArray(){{ put(category); }});
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create lobby or body in onSuccessJson in MainActivity");
                 }
                 lobbyCreated = true;
                 ApiAccess access = new ApiAccess();
                 access.getData(url, getApplicationContext(), body, MainActivity.this, Request.Method.POST);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't find values in JSONObject in MainActivity");
         }
     }
 }

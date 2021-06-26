@@ -15,7 +15,13 @@ import java.util.List;
 import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.adapter.RankingAdapter;
 import at.htlkaindorf.bigbrain.beans.Rank;
+import at.htlkaindorf.bigbrain.beans.User;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  10.06.2021
+ * Project:  BigBrain
+ * */
 public class GameFinishActivity extends AppCompatActivity {
     private RecyclerView ranking;
     private Button exitToMenu;
@@ -32,6 +38,8 @@ public class GameFinishActivity extends AppCompatActivity {
         exitToMenu = findViewById(R.id.btExitToMenu);
         exitToLobby = findViewById(R.id.btExitToLobby);
 
+        // To check if user is playing a solo game
+        // If so --> this activity can be skipt
         Intent i = getIntent();
         if(i.getBooleanExtra("soloGame", false)){
             Intent intent = new Intent();
@@ -39,10 +47,13 @@ public class GameFinishActivity extends AppCompatActivity {
             setResult(11, intent);
             finish();
         }
+        User user = i.getParcelableExtra("user");
+        // Set values onto the RecyclerView
         List<Rank> rankList = i.getParcelableArrayListExtra("ranking");
         ranking.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        ranking.setAdapter(ra = new RankingAdapter(rankList, "Points"));
+        ranking.setAdapter(ra = new RankingAdapter(rankList, "Points", user));
 
+        // Button to exit to the menu
         exitToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +64,7 @@ public class GameFinishActivity extends AppCompatActivity {
             }
         });
 
+        // Button to exit to the lobby (WaitingRoomActivity)
         exitToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +76,7 @@ public class GameFinishActivity extends AppCompatActivity {
         });
     }
 
+    // If user swipes --> exit to the lobby (WaitingRoomActivity)
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();

@@ -34,6 +34,11 @@ import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.api_access.ApiAccess;
 import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  11.05.2021
+ * Project:  BigBrain
+ * */
 public class RegisterActivity extends AppCompatActivity implements JsonResponseListener {
     // Button
     private Button register;
@@ -61,12 +66,7 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
         email = findViewById(R.id.etRegisterEmail);
         password = findViewById(R.id.etRegisterPassword);
 
-        // RequestQue
-        RequestQueue requestQueue;
-
-        requestQueue = Volley.newRequestQueue(this);
-
-
+        // Button to creat a new User
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
                     body.put("email", email.getText());
                     body.put("password",password.getText());
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create body in RegisterActivity");
                 }
                 ApiAccess access = new ApiAccess();
                 access.getData(url, getApplicationContext(), body, RegisterActivity.this, Request.Method.POST);
@@ -85,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
             }
         });
 
+        // Button to exit the RegisterActivity --> back to the LoginActivity
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,13 +96,6 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
 
     @Override
     public void onSuccessJson(String response) {
-        JSONObject jObject = null;
-        try {
-            jObject = new JSONObject(response);
-            Log.i("Success: ", jObject.get("success").toString());
-            Log.i("Token: ", jObject.get("token").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        // onSuccessJson needs to be implemented, but is not used in this Activity
     }
 }

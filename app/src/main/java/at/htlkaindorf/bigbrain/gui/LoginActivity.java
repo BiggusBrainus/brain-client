@@ -26,6 +26,11 @@ import at.htlkaindorf.bigbrain.api_access.ApiAccess;
 import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 import at.htlkaindorf.bigbrain.beans.User;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  06.04.2021
+ * Project:  BigBrain
+ * */
 public class LoginActivity extends AppCompatActivity implements JsonResponseListener {
     // Button
     private Button login;
@@ -43,7 +48,6 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         // Button
         login = findViewById(R.id.btLogin);
         registerNow = findViewById(R.id.tvRegisterNow);
@@ -52,13 +56,10 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
         username = findViewById(R.id.etUsername);
         password = findViewById(R.id.etPassword);
 
+        // Button to login into our account
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Um code offline zu testen
-                //testen();
-
-
                 // Login Request
                 // Create data for request
                 String url = "https://brain.b34nb01z.club/auth/login";
@@ -67,13 +68,14 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
                     body.put("username", username.getText());
                     body.put("password",password.getText());
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create body in LoginActivity");
                 }
                 ApiAccess access = new ApiAccess();
                 access.getData(url, getApplicationContext(), body, LoginActivity.this, Request.Method.POST);
             }
         });
 
+        // Button to forward user to the RegisterActivity
         registerNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,9 +90,6 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
         JSONObject jObject = null;
         try {
             jObject = new JSONObject(response);
-            Log.i("Success: ", jObject.get("success").toString());
-            Log.i("Token: ", jObject.get("token").toString());
-
             if((boolean) (jObject.get("success"))){
                 Intent i = getIntent();
                 // TODO change the variables
@@ -98,14 +97,13 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
                 user.setUsername(username.getText().toString());
                 user.setEmail("asdfasdfasdf");
                 user.setToken(jObject.get("token").toString());
+                user.setUid((int) jObject.get("uid"));
                 Intent intent = new Intent();
                 intent.putExtra("user", user);
                 setResult(1, intent);
                 finish();
             }else{
-                Log.i("Error: ", jObject.get("error").toString());
                 switch(jObject.get("error").toString()){
-                    //TODO error handle message
                     case "UNKNOWN_CREDS":
                         this.runOnUiThread(new Runnable() {
                             @Override
@@ -125,24 +123,12 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't find values in JSONObject in LoginActivity");
         }
     }
 
+    // If user swipes --> nothing should happen
     @Override
     public void onBackPressed() {
-    }
-
-    // TODO can be deleted. Only purpose is to test without connection to server
-    public void testen(){
-        Intent i = getIntent();
-        User user = i.getParcelableExtra("user");
-        user.setUsername(username.getText().toString());
-        user.setEmail("asdfasdfasdf");
-        user.setToken("wowEineToken");
-        Intent intent = new Intent();
-        intent.putExtra("user", user);
-        setResult(1, intent);
-        finish();
     }
 }

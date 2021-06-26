@@ -39,6 +39,11 @@ import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.beans.WebSocket;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  25.05.2021
+ * Project:  BigBrain
+ * */
 public class WaitingRoomActivity extends AppCompatActivity implements JsonResponseListener {
     // Buttons
     private Button start;
@@ -56,10 +61,10 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_waiting_room);
 
         Intent i = getIntent();
+        // Set a value in the WebSocket class
         WebSocket.bindWaitingRoom(this);
         WebSocket.createWebSocketClient();
 
@@ -68,9 +73,10 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         players = findViewById(R.id.rvPlayers);
 
         User user = i.getParcelableExtra("user");
-
+        // Send a request to connect the user to the lobby
         WebSocket.send(String.format("{\"action\" : \"CONNECT_TO_LOBBY\",\"token\" : \"%s\"}", user.getToken()));
 
+        // Button to start the GameActivity
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,17 +86,18 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
                 try {
                     body.put("token", user.getToken());
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create body in WaitingRoomActivity");
                 }
                 ApiAccess access = new ApiAccess();
                 access.getData(url, getApplicationContext(), body, WaitingRoomActivity.this, Request.Method.POST);
             }
         });
 
+        // Button to exit the lobby
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // User leavt aus lobby
+                // To leave the lobby
                 leave();
 
                 Intent intent = new Intent();
@@ -101,6 +108,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         });
     }
 
+    // To update the RecyclerView if a new player joins the lobby
     public void updatePlayer(JSONObject jObject) {
         runOnUiThread(new Runnable() {
             @Override
@@ -109,17 +117,18 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
                 Type listType = new TypeToken<ArrayList<User>>() {}.getType();
                 List<User> playerList = null;
                 try {
-                    Log.i("asdf",jObject.get("players").toString());
                     playerList = gson.fromJson(jObject.get("players").toString(), listType);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't find players in WaitingRoomActivity");
                 }
+                // Set the new list onto the RecyclerView
                 players.setLayoutManager(new LinearLayoutManager(parent.getApplicationContext()));
                 players.setAdapter(wra = new WaitingRoomAdapter(playerList.stream().map(User::getUsername).collect(Collectors.toList())));
             }
         });
     }
 
+    // Start the GameActivity
     public void startGame(){
         runOnUiThread(new Runnable() {
             @Override
@@ -128,6 +137,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
                 Intent i = getIntent();
                 User user = i.getParcelableExtra("user");
                 Intent intent = new Intent(parent, GameActivity.class);
+                // Only necessary for solo game
                 intent.putExtra("soloGame", false);
                 intent.putExtra("user", user);
                 startActivityForResult(intent, 10);
@@ -136,6 +146,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
 
     }
 
+    // To leave the lobby
     public void leave(){
         Intent i = getIntent();
         User user = i.getParcelableExtra("user");
@@ -144,7 +155,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         try {
             body.put("token", user.getToken());
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't create body in WaitingRoomActivity");
         }
         String url = "https://brain.b34nb01z.club/lobbies/leave";
         ApiAccess access = new ApiAccess();
@@ -153,7 +164,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
 
     @Override
     public void onSuccessJson(String response) {
-
+        // onSuccessJson needs to be implemented, but is not used in this Activity
     }
 
     @Override
@@ -163,7 +174,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
             case  "lobby":
                 break;
             case "menu":
-                // User leavt aus lobby
+                // To leave the lobby
                 leave();
 
                 Intent intent = new Intent();
@@ -174,6 +185,7 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         }
     }
 
+    // If user swipes --> exit to AllLobbiesActivity
     @Override
     public void onBackPressed() {
         leave();

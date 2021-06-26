@@ -31,12 +31,6 @@
         <activity android:name=".gui.LoginActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".gui.UserActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".gui.SettingsActivity"
-            android:screenOrientation="portrait">
-        </activity>
         <activity android:name=".gui.GameActivity"
             android:screenOrientation="portrait">
         </activity>

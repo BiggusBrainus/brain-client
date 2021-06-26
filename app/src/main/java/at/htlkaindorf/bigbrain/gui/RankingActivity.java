@@ -1,8 +1,10 @@
 package at.htlkaindorf.bigbrain.gui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -34,6 +36,11 @@ import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.Rank;
 import at.htlkaindorf.bigbrain.beans.User;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  08.06.2021
+ * Project:  BigBrain
+ * */
 public class RankingActivity extends AppCompatActivity implements JsonResponseListener {
     private RecyclerView ranking;
     private ImageButton navigationbarHome;
@@ -52,15 +59,11 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
         navigationbarRanking = findViewById(R.id.ibNavigationbarRanking);
 
         navigationbarRanking.setColorFilter(Color.rgb(93, 93, 93));
-
-
-        //testen();
+        // Request to get all User and their ranking
         String url = "https://brain.b34nb01z.club/ranking/get";
-        final JSONObject body = new JSONObject();
-
         ApiAccess access = new ApiAccess();
         access.getData(url, getApplicationContext(), RankingActivity.this, Request.Method.GET);
-
+        // ImageButton to exit the RankingActivity
         navigationbarHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,20 +80,14 @@ public class RankingActivity extends AppCompatActivity implements JsonResponseLi
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<Rank>>() {}.getType();
             List<Rank> rankList = gson.fromJson(jObject.get("ranking").toString(), listType);
-            ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            ranking.setAdapter(ra = new RankingAdapter(rankList, "Wins"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    // TODO just to test (without connection to the server)
-    public void testen(){
-        User u = new User("Hermann", "hermann@gmail.com", "WowEinToken");
-        Rank r = new Rank(u, (long) 10000);
-        List<Rank> rl = new ArrayList<>();
-        rl.add(r);
-        ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        ranking.setAdapter(ra = new RankingAdapter(rl, "Wins"));
+            Intent i = getIntent();
+            User user = i.getParcelableExtra("user");
+            // Set data onto the RecyclerView
+            ranking.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            ranking.setAdapter(ra = new RankingAdapter(rankList, "Wins", user));
+        } catch (JSONException e) {
+            Log.i("Exception", "Couldn't find ranking in JSONObject in RankingActivity");
+        }
     }
 }

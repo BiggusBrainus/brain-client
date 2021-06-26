@@ -36,6 +36,11 @@ import at.htlkaindorf.bigbrain.beans.Category;
 import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.User;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  08.06.2021
+ * Project:  BigBrain
+ * */
 public class CreateLobbyActivity extends AppCompatActivity implements JsonResponseListener {
     private EditText lobbyName;
     private Spinner categories;
@@ -49,9 +54,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_create_lobby);
-
 
         lobbyName = findViewById(R.id.etLobbyName);
         categories = findViewById(R.id.spCategories);
@@ -59,13 +62,12 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
         exit = findViewById(R.id.btExitCreateLobby);
         privateLobby = findViewById(R.id.cbPrivateLobby);
 
+        // Request to get all lobby categories
         String url = "https://brain.b34nb01z.club/lobbies/categories";
         ApiAccess access = new ApiAccess();
         access.getData(url, getApplicationContext(), CreateLobbyActivity.this, Request.Method.GET);
 
-        Intent i = getIntent();
-        User user = i.getParcelableExtra("user");
-
+        // Button to create a new lobby
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,13 +86,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
                     body.put("lobby", lobby);
                     body.putOpt("categories",new JSONArray(){{ put(categoryList.get(categoryList.stream().map(Category::getTitle).collect(Collectors.toList()).indexOf(categories.getSelectedItem().toString())).getCid()); }});
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't create the body when create button was pressed in CreateLobbyActivity");
                 }
                 ApiAccess access = new ApiAccess();
                 access.getData(url, getApplicationContext(), body, CreateLobbyActivity.this, Request.Method.POST);
             }
         });
 
+        // Button to exit the activity
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,20 +120,21 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 categories.setAdapter(adapter);
             } catch (JSONException e) {
+                // If no "categories" in Object but "success" is true --> finish the activity
                 if((boolean) jObject.get("success")){
                     Intent intent = new Intent();
-                    Intent i = getIntent();
-                    // To check if game should be started right away
+                    // To check if game should be started right away (only necessary for the solo game)
                     intent.putExtra("exit", "StehtDaDamitEsNichtNullIst");
                     setResult(42, intent);
                     finish();
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Error occurred in onSucessJson in CreateLobbyActivity");
         }
     }
 
+    // If user uses swipes to exit the activity
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();

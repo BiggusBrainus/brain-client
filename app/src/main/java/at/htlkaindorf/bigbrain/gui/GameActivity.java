@@ -42,6 +42,11 @@ import at.htlkaindorf.bigbrain.bl.ButtonSize;
 import at.htlkaindorf.bigbrain.bl.Game;
 import at.htlkaindorf.bigbrain.R;
 
+/*
+ * Author:   Nico Pessnegger
+ * Created:  20.04.2021
+ * Project:  BigBrain
+ * */
 public class GameActivity extends AppCompatActivity {
     // Text
     private TextView question;
@@ -98,9 +103,12 @@ public class GameActivity extends AppCompatActivity {
         Intent i = getIntent();
         user = i.getParcelableExtra("user");
 
+        // To set a value in the WebSocket class
         WebSocket.bindGame(this);
+        // Set Default values onto the buttons
         setDefaultValues();
 
+        // Top left button was pressed
         topLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +116,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        // Top right button was pressed
         topRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +124,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        // Bottom left button was pressed
         bottomLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +132,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        // Bottom Right button was pressed
         bottomRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,12 +141,14 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    // Get a JSONObject from the WebSocket class with the next question
     public void nextQuestion(JSONObject jObject){
+        // If it is the first question --> no delay
         if(!firstQuestion){
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.i("Exception", "Thread Interruped in nextQuestion() in GameActivity");
             }
         }else{
             firstQuestion = false;
@@ -157,39 +170,47 @@ public class GameActivity extends AppCompatActivity {
                     round.setText(counter + " / " + 5);
 
                     List<String> questionList = new ArrayList<>();
+                    // Set default values of buttons
                     setDefaultValues();
                     questionList.clear();
                     questionList.addAll(wrong);
                     questionList.add(rightAnswer);
+                    // Set all answers onto the buttons
                     setAnswersOnButtons(buttonList, questionList);
+                    // Set all buttons which are not used invisible and not clickable
                     checkNumberOfAnsweres(wrong);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.i("Exception", "Couldn't find question in JSONObject in GameActivity");
                 }
             }
         });
     }
 
+    // If it is the end of the game --> forward to the GameFinishActivity
     public void endOfGame(JSONObject jObject){
         Intent i = getIntent();
+        // Delay to see the right answer
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Thread Interruped in endOfGame() in GameActivity");
         }
         try {
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<Rank>>() {}.getType();
             ArrayList<Rank> rankList = gson.fromJson(jObject.get("ranking").toString(), listType);
             Intent intent = new Intent(this, GameFinishActivity.class);
+            intent.putExtra("user", user);
             intent.putParcelableArrayListExtra("ranking", rankList);
+            // Only necessary if it is a solo game --> no FinishGameActivity needed
             intent.putExtra("soloGame", i.getBooleanExtra("soloGame", false));
             startActivityForResult(intent, 11);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't find ranking in JSONObject in GameActivity");
         }
     }
 
+    // To set default values onto the buttons
     private void setDefaultValues(){
         timer.setText("");
 
@@ -210,6 +231,7 @@ public class GameActivity extends AppCompatActivity {
         DrawableCompat.setTint(bottomRight.getBackground(), getColor(R.color.white));
     }
 
+    // To set buttons invisbile and not clickable if necessary
     private void checkNumberOfAnsweres(List<String> wrong){
         if(wrong.size() == 1){
             bottomLeft.setClickable(false);
@@ -228,6 +250,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    // To set the right width and height of the button
     private void setDimensionOfButton(float dp, Button bt, boolean isWidth){
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float fpixels = metrics.density * dp;
@@ -241,6 +264,7 @@ public class GameActivity extends AppCompatActivity {
         bt.setLayoutParams(params);
     }
 
+    // Set all answers randomly onto buttons
     private void setAnswersOnButtons(List<Button> buttonList, List<String> questionList){
         Random rand = new Random();
         int i=0;
@@ -252,6 +276,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    // To check wether it is the right answer and to change the background
     private void checkAnswer(Button bt){
         String text = bt.getText().toString();
         // set the colors
@@ -276,6 +301,7 @@ public class GameActivity extends AppCompatActivity {
             DrawableCompat.setTint(drawable, getColor(R.color.wrong));
         }
 
+        // Send the answer of the user to the server
         WebSocket.send(String.format("{\"action\":\"ANSWER\",\"question\":\"%d\",\"token\":\"%s\",\"answer\":\"%s\"}", counter-1, user.getToken(), bt.getText()));
 
         topLeft.setClickable(false);
@@ -283,6 +309,7 @@ public class GameActivity extends AppCompatActivity {
         bottomLeft.setClickable(false);
         bottomRight.setClickable(false);
 
+        // A text to see for the user when he has answerd all the questions
         timer.setText("Waiting for other Players...");
         Intent intent = getIntent();
         int rounds = intent.getIntExtra("rounds", 0);
@@ -294,10 +321,10 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("test", data.getStringExtra("exit"));
         // Weiterleiten
         Intent intent = new Intent();
         Intent i = getIntent();
+        // To check wether it was a solo game or a mulitplyer game
         if(i.getBooleanExtra("soloGame", false)){
             setResult(70, intent);
         }else{
@@ -308,6 +335,7 @@ public class GameActivity extends AppCompatActivity {
         finish();
     }
 
+    // Nothing should be done if user swipes
     @Override
     public void onBackPressed() {
     }

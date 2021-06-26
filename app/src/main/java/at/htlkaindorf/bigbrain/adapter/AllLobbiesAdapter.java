@@ -1,40 +1,21 @@
 package at.htlkaindorf.bigbrain.adapter;
 
-import android.app.DownloadManager;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.app.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import at.htlkaindorf.bigbrain.R;
-import at.htlkaindorf.bigbrain.api_access.ApiAccess;
-import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.LobbyHolder;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.gui.AllLobbiesActivity;
-import at.htlkaindorf.bigbrain.gui.SettingsActivity;
-import at.htlkaindorf.bigbrain.gui.UserActivity;
-import at.htlkaindorf.bigbrain.gui.WaitingRoomActivity;
 
 public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> {
     private AllLobbiesActivity parent;

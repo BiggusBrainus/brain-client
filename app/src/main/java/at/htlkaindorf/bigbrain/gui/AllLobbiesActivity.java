@@ -37,6 +37,11 @@ import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.User;
 
+/*
+* Author:   Nico Pessnegger
+* Created:  25.05.2021
+* Project:  BigBrain
+* */
 public class AllLobbiesActivity extends AppCompatActivity implements JsonResponseListener {
     private final Activity parent = this;
 
@@ -63,10 +68,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_all_lobbies);
-
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         joinPrivate = findViewById(R.id.btJoinPrivate);
@@ -82,9 +84,9 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         // Login Request
         // Create data for request
         String url = "https://brain.b34nb01z.club/lobbies/get";
-        final JSONObject body = new JSONObject();
 
         ApiAccess access = new ApiAccess();
+        // Thread to make a request every second
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -93,7 +95,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Log.i("Exception", "Thread Interrupted in AllLobbiesActivity");
                         break;
                     }
                 }
@@ -101,9 +103,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
         });
         thread.start();
 
-        // Um code offline zu testen
-        //testen();
-
+        // Button to join a private lobby
         joinPrivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,12 +143,13 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 // create alert dialog
                 AlertDialog alertDialog = alertDialogBuilder.create();
 
-                // show it
+                // show alert dialog
                 alertDialog.show();
 
             }
         });
 
+        // Button to exit the AllLobbiesActivityScreen
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,6 +158,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
             }
         });
 
+        // Button to create a lobby
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,7 +200,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
             body.put("token", user.getToken());
             body.put("lobby", lobbyName);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't set token or body in AllLobbiesActivity");
         }
         String url = "https://brain.b34nb01z.club/lobbies/join";
         ApiAccess access = new ApiAccess();
@@ -220,8 +222,8 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 lobbies.setAdapter(ala);
                 ala.filterLobbies(searchbar.getQuery().toString());
             } catch (JSONException e) {
+                // If no "lobbies" in Object but "success" is true --> forward to WaitingRoom
                 if((boolean) jObject.get("success")){
-                    // Weiterleiten zum WaitingRoom
                     thread.interrupt();
                     Intent intent = new Intent(parent, WaitingRoomActivity.class);
                     intent.putExtra("user", user);
@@ -229,23 +231,26 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i("Exception", "Couldn't find lobbies in JSONObject in AllLobbiesActivity");
         }
     }
 
+    // To check the reult codes of the Activities
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
+            // requestCode of WaitingRoomActivity
             case 9:
                 if (data.getStringExtra("exit").equals("menu")){
                     finish();
                 }
                 break;
+            // requestCode of CreateLobbyActivity
             case 42:
                 if (!data.getStringExtra("exit").equals("lobby")){
                     Intent i = getIntent();
-                    // Weiterleiten zum WaitingRoom
+                    // Forward to WaitingRoom
                     Intent intent = new Intent(parent, WaitingRoomActivity.class);
                     intent.putExtra("user", user);
                     intent.putExtra("soloGame", i.getBooleanExtra("soloGame", false));
@@ -253,19 +258,5 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 }
                 break;
         }
-    }
-
-    // TODO just to test (without connection to the server)
-    public void testen(){
-        User u = new User("Hermann", "hermann@gmail.com", "WowEinToken");
-        List<User> ul = new ArrayList<>();
-        ul.add(u);
-
-        Lobby l = new Lobby("Lobby1", ul, null, true);
-        List<Lobby> ll= new ArrayList<>();
-        ll.add(l);
-        lobbies.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        lobbies.setAdapter(ala = new AllLobbiesAdapter(this, ll, user));
-        ala.filterLobbies(searchbar.getQuery().toString());
     }
 }

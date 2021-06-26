@@ -45,11 +45,10 @@ public class WebSocket {
     public static void createWebSocketClient() {
         URI uri;
         try {
-            // Connect to local host
             uri = new URI("wss://brain.b34nb01z.club/ws/game");
         }
         catch (URISyntaxException e) {
-            e.printStackTrace();
+            Log.i("Exception", "No valid URI in WebSocket");
             return;
         }
 
@@ -64,8 +63,8 @@ public class WebSocket {
                 final String message = s;
                 try{
                     JSONObject jObject = new JSONObject(message);
-                    Log.i("Websocket says: ", message);
                     switch (jObject.get("action").toString()){
+                        // New player joined lobby
                         case "LOBBY_PLAYERS_UPDATE":
                             Log.i("asdf", jObject.get("players").toString());
                             if(wr != null){
@@ -74,17 +73,20 @@ public class WebSocket {
                                 ma.startGameActivity();
                             }
                             break;
+                        // A user pressed the start button in WaitingRoomActivity
                         case "START_GAME":
                             if(wr != null){
                                 wr.startGame();
                             }
                             break;
+                        // All players answered a question and now get the next one
                         case "NEXT_QUESTION":
                             while(ga == null){
                                 Thread.sleep(10);
                             }
                             ga.nextQuestion(jObject);
                             break;
+                        // All questions have been answered --> games ends
                         case "END_OF_GAME":
                             ga.endOfGame(jObject);
                             ga = null;
@@ -93,7 +95,7 @@ public class WebSocket {
                             break;
                     }
                 } catch (Exception e){
-                    e.printStackTrace();
+                    Log.i("Exception", "Error occurred in WebSocket");
                 }
             }
 

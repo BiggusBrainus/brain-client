@@ -1,11 +1,14 @@
 package at.htlkaindorf.bigbrain.adapter;
 
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -15,14 +18,17 @@ import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.beans.LobbyHolder;
 import at.htlkaindorf.bigbrain.beans.Rank;
 import at.htlkaindorf.bigbrain.beans.RankingHolder;
+import at.htlkaindorf.bigbrain.beans.User;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
     private List<Rank> rankList = new ArrayList<>();
     private String unit;
+    private User user;
 
-    public RankingAdapter(List<Rank> rankList, String unit) {
+    public RankingAdapter(List<Rank> rankList, String unit, User user) {
         this.rankList = rankList;
         this.unit = unit;
+        this.user = user;
     }
 
     @NonNull
@@ -31,8 +37,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ranking_item, parent, false);
         TextView username = view.findViewById(R.id.tvUserName);
         TextView score = view.findViewById(R.id.tvScore);
+        ConstraintLayout cl = view.findViewById(R.id.clRankingItem);
 
-        RankingHolder holder = new RankingHolder(view, username, score);
+        RankingHolder holder = new RankingHolder(view, username, score, cl);
         return holder;
     }
 
@@ -42,6 +49,11 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
 
         holder.getUsername().setText(rank.getUser().getUsername().toString());
         holder.getScore().setText(rank.getScore().toString() + " " + unit);
+        if(this.user.getUid() == rank.getUser().getUid()){
+            Log.i("test", user.getUsername());
+            holder.getCl().setBackgroundColor(Color.rgb(81, 216, 216));
+        }
+
     }
 
     @Override
