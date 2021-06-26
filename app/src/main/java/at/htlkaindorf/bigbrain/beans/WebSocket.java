@@ -59,14 +59,12 @@ public class WebSocket {
             }
             @Override
             public void onTextReceived(String s) {
-                Log.i("WebSocket", "Message received");
                 final String message = s;
                 try{
                     JSONObject jObject = new JSONObject(message);
                     switch (jObject.get("action").toString()){
                         // New player joined lobby
                         case "LOBBY_PLAYERS_UPDATE":
-                            Log.i("asdf", jObject.get("players").toString());
                             if(wr != null){
                                 wr.updatePlayer(jObject);
                             }else if(ma != null){
@@ -121,7 +119,6 @@ public class WebSocket {
 
             @Override
             public void onCloseReceived() {
-                Log.i("WebSocket", "Closed ");
                 System.out.println("onCloseReceived");
             }
         };

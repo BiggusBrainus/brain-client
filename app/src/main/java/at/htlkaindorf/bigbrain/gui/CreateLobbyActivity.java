@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,25 +72,29 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get user variable
-                Intent i = getIntent();
-                User user = i.getParcelableExtra("user");
+                if(!lobbyName.getText().toString().trim().equals("")){
+                    // Get user variable
+                    Intent i = getIntent();
+                    User user = i.getParcelableExtra("user");
 
-                // Create data for request
-                String url = "https://brain.b34nb01z.club/lobbies/create";
-                final JSONObject body = new JSONObject();
-                final JSONObject lobby = new JSONObject();
-                try {
-                    lobby.put("name", lobbyName.getText().toString());
-                    lobby.put("hidden", privateLobby.isChecked());
-                    body.put("token", user.getToken());
-                    body.put("lobby", lobby);
-                    body.putOpt("categories",new JSONArray(){{ put(categoryList.get(categoryList.stream().map(Category::getTitle).collect(Collectors.toList()).indexOf(categories.getSelectedItem().toString())).getCid()); }});
-                } catch (JSONException e) {
-                    Log.i("Exception", "Couldn't create the body when create button was pressed in CreateLobbyActivity");
+                    // Create data for request
+                    String url = "https://brain.b34nb01z.club/lobbies/create";
+                    final JSONObject body = new JSONObject();
+                    final JSONObject lobby = new JSONObject();
+                    try {
+                        lobby.put("name", lobbyName.getText().toString());
+                        lobby.put("hidden", privateLobby.isChecked());
+                        body.put("token", user.getToken());
+                        body.put("lobby", lobby);
+                        body.putOpt("categories",new JSONArray(){{ put(categoryList.get(categoryList.stream().map(Category::getTitle).collect(Collectors.toList()).indexOf(categories.getSelectedItem().toString())).getCid()); }});
+                    } catch (JSONException e) {
+                        Log.i("Exception", "Couldn't create the body when create button was pressed in CreateLobbyActivity");
+                    }
+                    ApiAccess access = new ApiAccess();
+                    access.getData(url, getApplicationContext(), body, CreateLobbyActivity.this, Request.Method.POST);
+                }else{
+                    Toast.makeText(CreateLobbyActivity.this, "Lobby name can not be empty", Toast.LENGTH_LONG).show();
                 }
-                ApiAccess access = new ApiAccess();
-                access.getData(url, getApplicationContext(), body, CreateLobbyActivity.this, Request.Method.POST);
             }
         });
 
@@ -125,6 +130,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
                     Intent intent = new Intent();
                     // To check if game should be started right away (only necessary for the solo game)
                     intent.putExtra("exit", "StehtDaDamitEsNichtNullIst");
+                    intent.putExtra("lobbyName", lobbyName.getText().toString());
                     setResult(42, intent);
                     finish();
                 }

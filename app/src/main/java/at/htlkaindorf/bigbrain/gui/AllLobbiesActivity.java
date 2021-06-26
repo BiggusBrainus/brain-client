@@ -65,6 +65,9 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
     // Thread
     private Thread thread;
 
+    // Text
+    private String lobbyName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,8 +196,9 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
     }
 
     // To use .onActivityResult() the intent has to be sent from an Activity
-    public void sendJoinRequest(String lobbyName) {
+    public void sendJoinRequest(String lobbyN) {
         // Request to get lobby token
+        lobbyName = lobbyN;
         final JSONObject body = new JSONObject();
         try {
             body.put("token", user.getToken());
@@ -226,6 +230,13 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 if((boolean) jObject.get("success")){
                     thread.interrupt();
                     Intent intent = new Intent(parent, WaitingRoomActivity.class);
+                    intent.putExtra("lobbyName", lobbyName);
+
+
+                    Log.i("test", lobbyName);
+
+
+
                     intent.putExtra("user", user);
                     startActivityForResult(intent, 9);
                 }
@@ -250,9 +261,15 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
             case 42:
                 if (!data.getStringExtra("exit").equals("lobby")){
                     Intent i = getIntent();
+                    lobbyName = data.getStringExtra("lobbyName");
                     // Forward to WaitingRoom
                     Intent intent = new Intent(parent, WaitingRoomActivity.class);
+
+
+                    Log.i("test", lobbyName);
+
                     intent.putExtra("user", user);
+                    intent.putExtra("lobbyName", lobbyName);
                     intent.putExtra("soloGame", i.getBooleanExtra("soloGame", false));
                     startActivityForResult(intent, 9);
                 }

@@ -92,12 +92,12 @@ public class LoginActivity extends AppCompatActivity implements JsonResponseList
             jObject = new JSONObject(response);
             if((boolean) (jObject.get("success"))){
                 Intent i = getIntent();
-                // TODO change the variables
                 User user = i.getParcelableExtra("user");
                 user.setUsername(username.getText().toString());
-                user.setEmail("asdfasdfasdf");
+                user.setEmail("IsJustAPlaceHolderSoThatItIsNotNull");
                 user.setToken(jObject.get("token").toString());
-                user.setUid((int) jObject.get("uid"));
+                user.setUid((int) (jObject.get("uid")));
+
                 Intent intent = new Intent();
                 intent.putExtra("user", user);
                 setResult(1, intent);

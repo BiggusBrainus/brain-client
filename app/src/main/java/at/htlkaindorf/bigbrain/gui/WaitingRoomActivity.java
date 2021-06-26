@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +59,8 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
     // Activity
     private Activity parent = this;
 
+    // TextView
+    private TextView headline;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +71,14 @@ public class WaitingRoomActivity extends AppCompatActivity implements JsonRespon
         WebSocket.bindWaitingRoom(this);
         WebSocket.createWebSocketClient();
 
+        headline = findViewById(R.id.tvHeadline);
         start = findViewById(R.id.btStart);
         exit = findViewById(R.id.btExit);
         players = findViewById(R.id.rvPlayers);
+
+        // Get lobby name
+        String lobbyName = i.getStringExtra("lobbyName");
+        headline.setText(lobbyName);
 
         User user = i.getParcelableExtra("user");
         // Send a request to connect the user to the lobby

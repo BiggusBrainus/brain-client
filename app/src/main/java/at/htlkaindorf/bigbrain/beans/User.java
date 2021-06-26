@@ -12,13 +12,15 @@ public class User implements Parcelable {
     public User() {
     }
 
-    public User(String username, String email, String token) {
+    public User(int uid, String username, String email, String token) {
+        this.uid = uid;
         this.username = username;
         this.email = email;
         this.token = token;
     }
 
     protected User(Parcel in) {
+        uid = in.readInt();
         username = in.readString();
         token = in.readString();
         email = in.readString();
@@ -63,6 +65,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(uid);
         parcel.writeString(username);
         parcel.writeString(token);
         parcel.writeString(email);

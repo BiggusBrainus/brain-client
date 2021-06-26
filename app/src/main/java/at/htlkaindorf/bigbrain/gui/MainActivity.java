@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements JsonResponseListe
         switch (requestCode){
             // requestCode of LoginActivity
             case 1:
+                user = data.getParcelableExtra("user");
                 break;
             // requestCode of
             case 70:
