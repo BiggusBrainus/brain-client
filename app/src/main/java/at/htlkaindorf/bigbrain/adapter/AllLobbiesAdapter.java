@@ -1,6 +1,5 @@
 package at.htlkaindorf.bigbrain.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.beans.Lobby;
-import at.htlkaindorf.bigbrain.beans.LobbyHolder;
+import at.htlkaindorf.bigbrain.holder.LobbyHolder;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.gui.AllLobbiesActivity;
 

@@ -1,4 +1,4 @@
-package at.htlkaindorf.bigbrain.beans;
+package at.htlkaindorf.bigbrain.holder;
 
 import android.util.Log;
 import android.view.View;
@@ -7,6 +7,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Holder for the AllLobbiesAdapter
+ * @version BigBrain v1
+ * @since 26.05.2021
+ * @author Nico Pessnegger
+ */
 public class LobbyHolder extends RecyclerView.ViewHolder{
     private TextView lobbyName;
     private TextView amountOfPlayers;

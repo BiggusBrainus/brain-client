@@ -15,11 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.htlkaindorf.bigbrain.R;
-import at.htlkaindorf.bigbrain.beans.LobbyHolder;
 import at.htlkaindorf.bigbrain.beans.Rank;
-import at.htlkaindorf.bigbrain.beans.RankingHolder;
+import at.htlkaindorf.bigbrain.holder.RankingHolder;
 import at.htlkaindorf.bigbrain.beans.User;
 
+/**
+ * Adapter for the RecyclerView in the RankingActivity
+ * @version BigBrain v1
+ * @since 11.06.2021
+ * @author Nico Pessnegger
+ */
 public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
     private List<Rank> rankList = new ArrayList<>();
     private String unit;

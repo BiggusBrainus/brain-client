@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import at.htlkaindorf.bigbrain.R;
-import at.htlkaindorf.bigbrain.beans.Lobby;
-import at.htlkaindorf.bigbrain.beans.LobbyHolder;
-import at.htlkaindorf.bigbrain.beans.WaitingRoomHolder;
-import at.htlkaindorf.bigbrain.gui.WaitingRoomActivity;
+import at.htlkaindorf.bigbrain.holder.WaitingRoomHolder;
 
+/**
+ * Adapter for the RecyclerView in the WaitingRoomActivity
+ * @version BigBrain v1
+ * @since 02.06.2021
+ * @author Nico Pessnegger
+ */
 public class WaitingRoomAdapter extends RecyclerView.Adapter<WaitingRoomHolder> {
     private List<String> players;
 
