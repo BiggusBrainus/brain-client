@@ -2,6 +2,12 @@ package at.htlkaindorf.bigbrain.beans;
 
 import java.util.List;
 
+/**
+ * Represents a Lobby
+ * @version BigBrain v1
+ * @since 26.05.2021
+ * @author Nico Pessnegger
+ */
 public class Lobby {
     private String name;
     private List<User> players;

@@ -1,5 +1,11 @@
 package at.htlkaindorf.bigbrain.beans;
 
+/**
+ * Represtents a Category
+ * @version BigBrain v1
+ * @since 01.06.2021
+ * @author Nico Pessnegger
+ */
 public class Category {
     private int cid;
     private String title;

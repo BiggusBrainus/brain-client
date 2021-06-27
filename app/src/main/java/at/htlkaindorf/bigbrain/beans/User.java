@@ -3,6 +3,12 @@ package at.htlkaindorf.bigbrain.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents a BigBrain user
+ * @version BigBrain v1
+ * @since 11.05.2021
+ * @author Nico Pessnegger
+ */
 public class User implements Parcelable {
     private int uid;
     private String username;

@@ -2,6 +2,12 @@ package at.htlkaindorf.bigbrain.beans;
 
 import java.util.List;
 
+/**
+ * Represents a Question (question itself, right answer, wrong answers
+ * @version BigBrain v1
+ * @since 09.06.2021
+ * @author Nico Pessnegger
+ */
 public class Question {
     private String question;
     private String correct;

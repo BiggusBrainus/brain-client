@@ -3,6 +3,12 @@ package at.htlkaindorf.bigbrain.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents the rank of a BigBrain user
+ * @version BigBrain v1
+ * @since 10.06.2021
+ * @author Nico Pessnegger
+ */
 public class Rank implements Parcelable {
     private User user;
     private Long score;

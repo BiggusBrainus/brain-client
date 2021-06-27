@@ -23,6 +23,12 @@ import at.htlkaindorf.bigbrain.gui.MainActivity;
 import at.htlkaindorf.bigbrain.gui.WaitingRoomActivity;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
+/**
+ * Used for all websocket operations
+ * @version BigBrain v1
+ * @since 09.06.2021
+ * @author Nico Pessnegger
+ */
 public class WebSocket {
     private static WebSocketClient webSocketClient;
     public static WaitingRoomActivity wr;
@@ -41,7 +47,7 @@ public class WebSocket {
         ma = main;
     }
 
-    // Alles für die Websockets
+    // To create a new WebSocket
     public static void createWebSocketClient() {
         URI uri;
         try {

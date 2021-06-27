@@ -39,7 +39,6 @@ import at.htlkaindorf.bigbrain.beans.Rank;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.beans.WebSocket;
 import at.htlkaindorf.bigbrain.bl.ButtonSize;
-import at.htlkaindorf.bigbrain.bl.Game;
 import at.htlkaindorf.bigbrain.R;
 
 /**
@@ -59,9 +58,6 @@ public class GameActivity extends AppCompatActivity {
     private Button topRight;
     private Button bottomLeft;
     private Button bottomRight;
-
-    // Game
-    private Game game = new Game();
 
     // Activity
     private Activity parent = this;

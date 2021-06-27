@@ -18,13 +18,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to handle the requests
+ * @version BigBrain v1
+ * @since 18.05.2021
+ * @author Nico Pessnegger
+ */
 public class ApiAccess {
     private JsonResponseListener jrl;
 
+    // To send a request to the server
     public JSONObject getData(String url, Context context, JSONObject body, JsonResponseListener jrl, int method){
        this. jrl = jrl;
         StringRequest request = new StringRequest(method, url, new Response.Listener<String>() {
-            //JSONObject jObject;
 
             @Override
             public void onResponse(String response) {
@@ -43,13 +49,7 @@ public class ApiAccess {
             }
         }) {
 
-            //Pass Your Parameters
-            /*@Override
-            protected Map<String, String> getParams() {
-                return parameters;
-            }*/
-
-            // using Json and not String
+            // to use json
             @Override
             public String getBodyContentType() {
                 return "application/json";
@@ -68,6 +68,7 @@ public class ApiAccess {
         return null;
     }
 
+    // Same as abouve, but without the body
     public JSONObject getData(String url, Context context, JsonResponseListener jrl, int method){
         this. jrl = jrl;
         StringRequest request = new StringRequest(method, url, new Response.Listener<String>() {
