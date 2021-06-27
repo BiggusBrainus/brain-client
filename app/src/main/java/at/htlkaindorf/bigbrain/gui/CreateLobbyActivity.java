@@ -90,11 +90,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements JsonRespon
                         body.put("token", user.getToken());
                         body.put("lobby", lobby);
                         body.putOpt("categories",new JSONArray(){{ put(categoryList.get(categoryList.stream().map(Category::getTitle).collect(Collectors.toList()).indexOf(categories.getSelectedItem().toString())).getCid()); }});
+                        ApiAccess access = new ApiAccess();
+                        access.getData(url, getApplicationContext(), body, CreateLobbyActivity.this, Request.Method.POST);
                     } catch (JSONException e) {
                         Log.i("Exception", "Couldn't create the body when create button was pressed in CreateLobbyActivity");
+                    } catch (NullPointerException e){
+                        Log.i("Exception", "NullPointerException in CreateLobbyActivity. Probably due to no internet connection");
+                        Toast.makeText(CreateLobbyActivity.this, "Please check your internet connection", Toast.LENGTH_LONG).show();
                     }
-                    ApiAccess access = new ApiAccess();
-                    access.getData(url, getApplicationContext(), body, CreateLobbyActivity.this, Request.Method.POST);
                 }else{
                     Toast.makeText(CreateLobbyActivity.this, "Lobby name can not be empty", Toast.LENGTH_LONG).show();
                 }

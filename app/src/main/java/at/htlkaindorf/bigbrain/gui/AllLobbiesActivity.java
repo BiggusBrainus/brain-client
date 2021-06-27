@@ -44,7 +44,7 @@ import at.htlkaindorf.bigbrain.beans.User;
  * @author Nico Pessnegger
  */
 public class AllLobbiesActivity extends AppCompatActivity implements JsonResponseListener {
-    private final Activity parent = this;
+    private final AllLobbiesActivity parent = this;
 
     // Buttons
     private Button exit;
@@ -193,6 +193,7 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                 try{
                     ala.filterLobbies(s);
                 }catch(NullPointerException e){
+                    ala = new AllLobbiesAdapter(parent, new ArrayList<>(), user);
                     ala.filterLobbies("");
                 }
                 return false;

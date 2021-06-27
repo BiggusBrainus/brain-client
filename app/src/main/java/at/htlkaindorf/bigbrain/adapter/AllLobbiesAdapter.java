@@ -18,6 +18,12 @@ import at.htlkaindorf.bigbrain.beans.LobbyHolder;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.gui.AllLobbiesActivity;
 
+/**
+ * Adapter for the RecyclerView in the AllLobbiesActivity
+ * @version BigBrain v1
+ * @since 26.05.2021
+ * @author Nico Pessnegger
+ */
 public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> {
     private AllLobbiesActivity parent;
     private List<Lobby> lobbyList;
