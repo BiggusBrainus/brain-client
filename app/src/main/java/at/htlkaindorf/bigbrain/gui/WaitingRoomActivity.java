@@ -40,11 +40,12 @@ import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.beans.WebSocket;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  25.05.2021
- * Project:  BigBrain
- * */
+/**
+ * User joined the lobby but is still waiting for other players to join
+ * @version BigBrain v1
+ * @since 25.05.2021
+ * @author Nico Pessnegger
+ */
 public class WaitingRoomActivity extends AppCompatActivity implements JsonResponseListener {
     // Buttons
     private Button start;

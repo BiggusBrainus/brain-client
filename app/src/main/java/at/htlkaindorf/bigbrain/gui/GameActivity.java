@@ -42,11 +42,12 @@ import at.htlkaindorf.bigbrain.bl.ButtonSize;
 import at.htlkaindorf.bigbrain.bl.Game;
 import at.htlkaindorf.bigbrain.R;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  20.04.2021
- * Project:  BigBrain
- * */
+/**
+ * User can play a game
+ * @version BigBrain v1
+ * @since 20.04.2021
+ * @author Nico Pessnegger
+ */
 public class GameActivity extends AppCompatActivity {
     // Text
     private TextView question;

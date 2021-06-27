@@ -37,11 +37,14 @@ import at.htlkaindorf.bigbrain.beans.Category;
 import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.User;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  08.06.2021
- * Project:  BigBrain
- * */
+/**
+ * User can create a lobby
+ * To create a lobby user needs to enter:
+ * lobby name, category, and select private or public lobby
+ * @version BigBrain v1
+ * @since 08.06.2021
+ * @author Nico Pessnegger
+ */
 public class CreateLobbyActivity extends AppCompatActivity implements JsonResponseListener {
     private EditText lobbyName;
     private Spinner categories;

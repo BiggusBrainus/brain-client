@@ -36,11 +36,12 @@ import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.Rank;
 import at.htlkaindorf.bigbrain.beans.User;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  08.06.2021
- * Project:  BigBrain
- * */
+/**
+ * The player can see his "rank" and the rank of all other users
+ * @version BigBrain v1
+ * @since 08.06.2021
+ * @author Nico Pessnegger
+ */
 public class RankingActivity extends AppCompatActivity implements JsonResponseListener {
     private RecyclerView ranking;
     private ImageButton navigationbarHome;

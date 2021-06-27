@@ -37,11 +37,12 @@ import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.User;
 
-/*
-* Author:   Nico Pessnegger
-* Created:  25.05.2021
-* Project:  BigBrain
-* */
+/**
+ * User can join/create a private/public lobby
+ * @version BigBrain v1
+ * @since 25.05.2021
+ * @author Nico Pessnegger
+ */
 public class AllLobbiesActivity extends AppCompatActivity implements JsonResponseListener {
     private final Activity parent = this;
 
@@ -189,7 +190,11 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
 
             @Override
             public boolean onQueryTextChange(String s) {
-                ala.filterLobbies(s);
+                try{
+                    ala.filterLobbies(s);
+                }catch(NullPointerException e){
+                    ala.filterLobbies("");
+                }
                 return false;
             }
         });

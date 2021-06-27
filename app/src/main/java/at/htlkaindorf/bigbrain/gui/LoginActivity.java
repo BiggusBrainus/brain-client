@@ -26,11 +26,12 @@ import at.htlkaindorf.bigbrain.api_access.ApiAccess;
 import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 import at.htlkaindorf.bigbrain.beans.User;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  06.04.2021
- * Project:  BigBrain
- * */
+/**
+ * User can login into his account or gets forwarded to create a new account
+ * @version BigBrain v1
+ * @since 06.04.2021
+ * @author Nico Pessnegger
+ */
 public class LoginActivity extends AppCompatActivity implements JsonResponseListener {
     // Button
     private Button login;

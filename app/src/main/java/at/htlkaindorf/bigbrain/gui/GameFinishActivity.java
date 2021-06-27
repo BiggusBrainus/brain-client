@@ -17,11 +17,13 @@ import at.htlkaindorf.bigbrain.adapter.RankingAdapter;
 import at.htlkaindorf.bigbrain.beans.Rank;
 import at.htlkaindorf.bigbrain.beans.User;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  10.06.2021
- * Project:  BigBrain
- * */
+/**
+ * After the game has finished, user is forwarded to this activity
+ * In this activity the ranking of every player (in the lobby) is shown
+ * @version BigBrain v1
+ * @since 10.06.2021
+ * @author Nico Pessnegger
+ */
 public class GameFinishActivity extends AppCompatActivity {
     private RecyclerView ranking;
     private Button exitToMenu;

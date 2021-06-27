@@ -36,11 +36,14 @@ import at.htlkaindorf.bigbrain.beans.Lobby;
 import at.htlkaindorf.bigbrain.beans.User;
 import at.htlkaindorf.bigbrain.beans.WebSocket;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  23.03.2021
- * Project:  BigBrain
- * */
+/**
+ * Is the main menu
+ * In this activity the user can play multiplayer/solo game
+ * and see his rank (user gets forwarded to the specific activity)
+ * @version BigBrain v1
+ * @since 23.03.2021
+ * @author Nico Pessnegger
+ */
 public class MainActivity extends AppCompatActivity implements JsonResponseListener{
     private final Activity parent = this;
 

@@ -34,11 +34,12 @@ import at.htlkaindorf.bigbrain.R;
 import at.htlkaindorf.bigbrain.api_access.ApiAccess;
 import at.htlkaindorf.bigbrain.api_access.JsonResponseListener;
 
-/*
- * Author:   Nico Pessnegger
- * Created:  11.05.2021
- * Project:  BigBrain
- * */
+/**
+ * User can create a new account
+ * @version BigBrain v1
+ * @since 11.05.2021
+ * @author Nico Pessnegger
+ */
 public class RegisterActivity extends AppCompatActivity implements JsonResponseListener {
     // Button
     private Button register;
