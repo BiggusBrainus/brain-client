@@ -65,7 +65,7 @@ public class AllLobbiesAdapter extends RecyclerView.Adapter<LobbyHolder> {
         Lobby lobby = filteredList.get(position);
 
         holder.getLobbyName().setText(lobby.getName());
-        holder.getAmountOfPlayers().setText(lobby.getPlayers().size() + " / 10");
+        holder.getAmountOfPlayers().setText(lobby.getPlayers().size() + " Players");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

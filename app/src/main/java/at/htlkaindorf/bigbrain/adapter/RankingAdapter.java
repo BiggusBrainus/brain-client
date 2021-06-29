@@ -55,7 +55,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingHolder> {
         holder.getUsername().setText(rank.getUser().getUsername().toString());
         holder.getScore().setText(rank.getScore().toString() + " " + unit);
         if(this.user.getUid() == rank.getUser().getUid()){
-            Log.i("test", user.getUsername());
             holder.getCl().setBackgroundColor(Color.rgb(81, 216, 216));
         }
 

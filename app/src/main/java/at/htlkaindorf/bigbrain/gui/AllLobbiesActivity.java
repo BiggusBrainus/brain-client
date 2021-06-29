@@ -237,12 +237,6 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                     thread.interrupt();
                     Intent intent = new Intent(parent, WaitingRoomActivity.class);
                     intent.putExtra("lobbyName", lobbyName);
-
-
-                    Log.i("test", lobbyName);
-
-
-
                     intent.putExtra("user", user);
                     startActivityForResult(intent, 9);
                 }
@@ -270,10 +264,6 @@ public class AllLobbiesActivity extends AppCompatActivity implements JsonRespons
                     lobbyName = data.getStringExtra("lobbyName");
                     // Forward to WaitingRoom
                     Intent intent = new Intent(parent, WaitingRoomActivity.class);
-
-
-                    Log.i("test", lobbyName);
-
                     intent.putExtra("user", user);
                     intent.putExtra("lobbyName", lobbyName);
                     intent.putExtra("soloGame", i.getBooleanExtra("soloGame", false));
