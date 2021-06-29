@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,19 +72,23 @@ public class RegisterActivity extends AppCompatActivity implements JsonResponseL
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://brain.b34nb01z.club/auth/register";
-                final JSONObject body = new JSONObject();
-                try {
-                    body.put("username", name.getText());
-                    body.put("email", email.getText());
-                    body.put("password",password.getText());
-                } catch (JSONException e) {
-                    Log.i("Exception", "Couldn't create body in RegisterActivity");
+                if(name.getText().toString().trim().equals("") || email.getText().toString().equals("") || password.getText().toString().equals("")){
+                    Toast.makeText(RegisterActivity.this, "Username, Email or Password is invalid", Toast.LENGTH_LONG).show();
+                }else{
+                    String url = "https://brain.b34nb01z.club/auth/register";
+                    final JSONObject body = new JSONObject();
+                    try {
+                        body.put("username", name.getText());
+                        body.put("email", email.getText());
+                        body.put("password",password.getText());
+                    } catch (JSONException e) {
+                        Log.i("Exception", "Couldn't create body in RegisterActivity");
+                    }
+                    ApiAccess access = new ApiAccess();
+                    access.getData(url, getApplicationContext(), body, RegisterActivity.this, Request.Method.POST);
+                    finish();
+                    }
                 }
-                ApiAccess access = new ApiAccess();
-                access.getData(url, getApplicationContext(), body, RegisterActivity.this, Request.Method.POST);
-                finish();
-            }
         });
 
         // Button to exit the RegisterActivity --> back to the LoginActivity
